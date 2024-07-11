@@ -1,4 +1,12 @@
-export default function Page() {
-    
-    return <h1>Hello, About!</h1>
+import Container from "./components/containter";
+import UserProfile from "./components/profile";
+
+export default function Home() {
+    return <div
+        style={{
+            display: 'flex',
+        }}
+    >
+        <Container />
+    </div>
 }

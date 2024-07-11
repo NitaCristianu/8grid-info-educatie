@@ -1,7 +1,9 @@
+import Links from "./components/Links";
 import MainMenuLinkButton from "./components/MainMenuLinkButton";
 import { TextTransition } from "./components/TextTransition";
 
 export default function Home() {
+
   return <div
     style={{
       display: 'flex',
@@ -35,7 +37,7 @@ export default function Home() {
       gapWords={5}
     />
 
-    <div
+    <Links
       style={{
         width: '50vh',
         height: '10vh',
@@ -45,12 +47,7 @@ export default function Home() {
         gap: '20vh',
         marginTop: '10vh',
       }}
-    >
-      <MainMenuLinkButton
-        href="/account"
-        content="Profile"
-      />
-    </div>
+    />
 
   </div>
 }
