@@ -12,7 +12,7 @@ export default function Links(props: { style: CSSProperties }) {
         style={props.style}
     >
         <MainMenuLinkButton
-            href={currentUser ? "/account" : '/login'}
+            href={currentUser != null ? "/account" : '/login'}
             content="Profile"
         />
     </div>

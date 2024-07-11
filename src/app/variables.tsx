@@ -7,5 +7,5 @@ export interface user_type {
     color : string,
 };
 
-export const currentUser_atom = atom<string | null>(null);
+export const currentUser_atom = atom<string | null>("user0");
 export const users_atom = atom<user_type[]>([]);
