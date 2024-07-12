@@ -8,12 +8,17 @@ export default function Links(props: { style: CSSProperties }) {
 
     const currentUser = useAtom(currentUser_atom)[0];
 
+    console.log(currentUser);
     return <div
         style={props.style}
     >
         <MainMenuLinkButton
-            href={currentUser != null ? "/account" : '/login'}
+            href={currentUser != null ? `/account/${currentUser}` : '/login'}
             content="Profile"
+        />
+        <MainMenuLinkButton
+            href={""}
+            content="kArewrt"
         />
     </div>
 }

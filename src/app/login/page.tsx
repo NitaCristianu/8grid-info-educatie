@@ -1,9 +1,9 @@
 import { PrismaClient } from "@prisma/client/extension"
 import prisma from "../libs/prisma"
 import LogInSignInComponent from "./components/login-sigin";
-import GradientBackground from "./components/GradientBackground";
 import ExitButton from "./components/BottomExitButton";
 import { redirect } from "next/navigation";
+import GradientCircle from "../components/GradientCircle";
 
 async function getUsers() {
     const users = await prisma.user.findMany();
@@ -18,7 +18,7 @@ async function createUser(id: string, password: string, email = "") {
             id, password, email: email
         }
     })
-    redirect('/account')
+    redirect(`/account/${id}`)
 }
 
 
@@ -27,20 +27,43 @@ export default async function Page() {
 
     async function logIn(id: string) {
         "use server";
-        redirect('/account')
+        redirect(`/account/${id}`)
     }
 
     return <div>
-        <GradientBackground
+        {/* <GradientBackground
             color1={{ r: 37, g: 40, b: 65 }}
             color2={{ r: 108, g: 189, b: 151 }}
-        />
+        /> */}
+
         <LogInSignInComponent
-            users={users.map(user => ({ id: user.id, email: user.email, password: user.password, color : user.color }))}
+            users={users.map(user => ({ id: user.id, email: user.email, password: user.password, color: user.color }))}
             createUser={createUser}
             logIn={logIn}
             signUp={createUser}
         />
-        <ExitButton />
+        <ExitButton exit={async () => {
+            "use server";
+            redirect("/")
+        }} />
+
+        <GradientCircle
+            size={1.1}
+            x={0}
+            y={-0.55}
+            color="rgba(231, 83, 83, 0.32)"
+        />
+        <GradientCircle
+            size={0.9}
+            x={-.1}
+            y={0.1}
+            color="rgba(70, 39, 191, 0.22)"
+        />
+        <GradientCircle
+            size={0.9}
+            x={0.2}
+            y={0.1}
+            color="rgba(107, 191, 39, 0.22)"
+        />
     </div>
 }

@@ -135,10 +135,11 @@ function Card(props: {
 
             >Password must have 8 characters at least</p>
         </form>
-        <motion.button
+        <motion.a
+            href={`/account/${props.name}`}
             style={{
                 textAlign: "center",
-                fontWeight: 'bolder',
+                fontWeight: 600,
                 fontSize: '3vh',
                 marginBottom: '2vh',
                 textShadow: "0px 0px 10px rgba(255, 255, 255, 0.15)",
@@ -174,7 +175,8 @@ function Card(props: {
                 setCurrentUser(user.id);
                 props.proced()
             }}
-        >{props.logging ? "Log in" : "Sign Up"}</motion.button>
+
+        >{props.logging ? "Log in" : "Sign Up"}</motion.a>
         <div
             style={{
                 width: '80%',
@@ -227,7 +229,7 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
             height: '70vh',
             width: '50vh',
             margin: 'auto',
-            borderRadius: '2rem',
+            borderRadius: '5rem',
             backdropFilter: 'blur(3px)',
             border: "1.5px solid rgba(255, 255, 255, 0.42)",
             background: "rgba(170, 170, 170, 0.1)",

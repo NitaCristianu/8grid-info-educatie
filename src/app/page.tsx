@@ -1,3 +1,4 @@
+import GradientCircle from "./components/GradientCircle";
 import Links from "./components/Links";
 import MainMenuLinkButton from "./components/MainMenuLinkButton";
 import { TextTransition } from "./components/TextTransition";
@@ -15,6 +16,18 @@ export default function Home() {
       flexDirection: 'column',
     }}
   >
+    <GradientCircle
+      x={0}
+      y={-.4}
+      size={1}
+      color="rgba(18, 35, 191, 0.35)"
+    />
+    <GradientCircle
+      x={.3}
+      y={-.2}
+      size={.8}
+      color="rgba(48, 6, 104, 0.5)"
+    />
     <h1
       style={{
         fontWeight: 'bolder',
