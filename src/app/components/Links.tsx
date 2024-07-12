@@ -8,7 +8,6 @@ export default function Links(props: { style: CSSProperties }) {
 
     const currentUser = useAtom(currentUser_atom)[0];
 
-    console.log(currentUser);
     return <div
         style={props.style}
     >

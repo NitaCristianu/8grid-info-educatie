@@ -4,7 +4,7 @@ import GradientCircle from "@/app/components/GradientCircle";
 import { currentUser_atom, user_type, users_atom } from "@/app/variables";
 import { useAtom } from "jotai";
 import { redirect } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { motion } from 'framer-motion';
 
 function OptionButton(props: { callback: () => void, content: string }) {
@@ -45,10 +45,6 @@ export default function Containter(props: {
 
     if (user == null) redirect('./login');
     const [userColor, setuserColor] = useState(user.color);
-
-    useEffect(() => {
-        setUser(users.find(a => a.id == currentUserId));
-    }, [currentUserId]);
 
     return <div
         style={{
