@@ -16,8 +16,8 @@ export default function Links(props: { style: CSSProperties }) {
             content="Profile"
         />
         <MainMenuLinkButton
-            href={""}
-            content="kArewrt"
+            href={"/explorer"}
+            content="Explorer"
         />
     </div>
 }

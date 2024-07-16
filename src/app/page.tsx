@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import GradientCircle from "./components/GradientCircle";
 import Links from "./components/Links";
 import MainMenuLinkButton from "./components/MainMenuLinkButton";

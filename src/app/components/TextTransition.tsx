@@ -19,7 +19,9 @@ export function TextTransition(props: { initial: string, after?: string, gapWord
             staggerChildren: .02,
         }}
     >
-        <div>
+        <motion.div
+            whileHover={{ cursor: "pointer" }}
+        >
             {props.initial.split("").map((l: string, i: number) => {
                 return <motion.span
                     key={i}
@@ -41,8 +43,9 @@ export function TextTransition(props: { initial: string, after?: string, gapWord
                     }}
                 >{l}</motion.span>
             })}
-        </div>
-        <div
+        </motion.div>
+        <motion.div
+            whileHover={{ cursor: "pointer" }}
             style={{
                 position: "absolute",
                 inset: 0
@@ -68,6 +71,6 @@ export function TextTransition(props: { initial: string, after?: string, gapWord
                     key={i}
                 >{l}</motion.span>
             })}
-        </div>
+        </motion.div>
     </motion.h1>
 }

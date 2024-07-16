@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client/extension"
 import prisma from "../libs/prisma"
 import LogInSignInComponent from "./components/login-sigin";
-import ExitButton from "./components/BottomExitButton";
+import ExitButton from "./components/upperTab";
 import { redirect } from "next/navigation";
 import GradientCircle from "../components/GradientCircle";
 

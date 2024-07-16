@@ -62,7 +62,7 @@ function Card(props: {
         >
             <input
                 type='text'
-                placeholder={props.logging ? "Enter Username or Email" : "Enter Username"}
+                placeholder={props.logging ? "Enter Username" : "Enter Username"}
                 style={inputProps}
                 value={props.name}
                 onChange={event => props.setName(event.currentTarget.value)}
@@ -221,6 +221,7 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [isLoggingIn, setIsLogginIn] = useState<boolean>(true);
+    const user = USERS.find(user => user.id == name || user.email == name);
 
     return <><div
         style={{
@@ -249,7 +250,7 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
             users={USERS}
             proced={() => {
                 if (isLoggingIn) {
-                    props.logIn(name);
+                    props.logIn(user ? user.id : name);
                 } else {
                     props.signUp(name, password, email);
                 }

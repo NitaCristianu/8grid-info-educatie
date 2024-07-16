@@ -2,22 +2,33 @@
 import { motion } from 'framer-motion';
 import { redirect } from 'next/navigation';
 
-export default function ExitButton(props : {exit : ()=>void}) {
+export default function ExitButton(props: {
+    exit: () => void,
+    saveButton?: {
+        save: () => void,
+
+    }
+}) {
     return <div
         style={{
-            padding:'3vh',
+            padding: '3vh',
             width: '100%',
             justifyContent: 'center',
             display: 'flex',
-            alignContent : 'center',
-            zIndex: 8
+            alignContent: 'center',
+            zIndex: 8,
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            gap: '2vw'
         }}
     >
         <motion.button
-            whileFocus={{
-                scale : 1.05
+            whileHover={{
+                scale: 1.05,
+                opacity : 0.5,
             }}
-            onClick={()=>props.exit()}
+            onClick={() => props.exit()}
         >
             <svg fill="#ffffff" width={32} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 495.398 495.398" >
                 <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -36,5 +47,14 @@ export default function ExitButton(props : {exit : ()=>void}) {
                 </g>
             </svg>
         </motion.button>
+        {props.saveButton ? <motion.button
+            whileFocus={{
+                scale: 1.05
+            }}
+            onClick={() => props.saveButton?.save()}
+
+        >
+            <svg width={'3vh'} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M5 21H19C20.1046 21 21 20.1046 21 19V8.82843C21 8.29799 20.7893 7.78929 20.4142 7.41421L16.5858 3.58579C16.2107 3.21071 15.702 3 15.1716 3H5C3.89543 3 3 3.89543 3 5V19C3 20.1046 3.89543 21 5 21Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 3V8H15V3" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> <path d="M7 21V15H17V21" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>
+        </motion.button> : null}
     </div >
 }

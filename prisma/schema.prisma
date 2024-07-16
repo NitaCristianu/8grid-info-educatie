@@ -10,14 +10,16 @@ datasource db {
 }
 
 model Post {
-  id       String   @id @default(uuid())
-  userId   String?
-  title    String
-  content  String
-  type     String
-  likes    Int
-  Comments String[]
-  User     User?    @relation(fields: [userId], references: [id])
+  id          String   @id @default(uuid())
+  userId      String?
+  title       String
+  content     String
+  type        String
+  likes       String[] // user ids
+  Comments    String[]
+  Description String
+  Public      Boolean  @default(false)
+  User        User?    @relation(fields: [userId], references: [id])
 }
 
 model User {
