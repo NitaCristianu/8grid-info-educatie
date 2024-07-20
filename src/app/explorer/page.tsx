@@ -1,18 +1,24 @@
+"use client";
 import { redirect } from "next/navigation";
 import prisma from "../libs/prisma"
 import ExitButton from "../login/components/upperTab";
 import ExplorerClient from "./components/explorer-client";
+import { useEffect, useState } from "react";
 
-export default async function Explorer() {
-    const posts = await prisma.post.findMany();
+export default function Explorer() {
+    const [isClient, setIsClient] = useState(false);
 
-    return <div>
-        <ExplorerClient
-            posts={posts}
-            redirect={async (href: string) => { "use server"; redirect(href) }}
-        />
-        <ExitButton
-            exit={async () => { "use server"; redirect('/') }}
-        />
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+    if (!isClient) {
+        return null;
+    }
+    return <div
+        suppressHydrationWarning
+    >
+        <ExplorerClient/>
+        <ExitButton/>
     </div>
 }

@@ -1,3 +1,4 @@
+"use client";
 import prisma from "@/app/libs/prisma";
 import CipMenu from "./components/CipMenu";
 import Properties from "./components/propertiestab";
@@ -10,6 +11,8 @@ import Pin from "./class/Pin";
 import And from "./class/And";
 import Cip from "./class/Cip";
 import Connection, { ConnectionEnd, ConnectionStart } from "./class/Connection";
+import { useEffect, useState } from "react";
+import { originalData } from "@/app/explorer/[id]/components/explorer-client-post";
 
 export interface Sim_data {
     inputs: {
@@ -40,40 +43,76 @@ export interface Sim_data {
     }[]
 }
 
-export default async function Home(props: { params: { id: string } }) {
+export default function Home(props: { params: { id: string } }) {
+
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
+
+
     const id = props.params.id.slice(1, props.params.id.length);
     const isEditable = props.params.id[0] == '1';
+    const [post, setPost] = useState<originalData | null>(null);
+    const [content, setContent] = useState<Sim_data | null>(null);
+    useEffect(() => {
+        fetch('/api/post', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((d) => {
+                console.log(d)
+                const post = (d as originalData[]).find(post => post.id == id) || null;
+                console.log(post)
+                console.log(post?.title, post?.content);
+                setPost(post);
+                if (post) {
+                    const content = post?.content.length > 0 ? post.content : "{}";
+                    setContent(JSON.parse(content));
+                }
 
-    const post = await prisma.post.findUnique({ where: { id: id } });
-    const post_data_string = (post?.content && post.content.length > 0) ? post.content : "{}";
-    if (!post_data_string) return;
+            })
+            .catch((error) => console.log('error', error));
+    }, []);
+    if (!isClient) {
+        return null;
+    }
 
-    const content: Sim_data = JSON.parse(post_data_string);
     return <>
-        {!isEditable ? <ExitButton
-            exit={async () => {
-                'use server'; redirect("/explorer/" + id)
-            }}
-        /> : <ExitButton
-            exit={async () => {
-                'use server'; redirect("/explorer/" + id)
-            }}
-        />}
+        <ExitButton
+            href={"/explorer/" + id}
+        />
         <Grid
             isEditable={isEditable}
             data={content}
         />
         {isEditable ? <Taskbar
-            saveproject={async (data: Sim_data) => {
-                "use server";
-                console.log(data);
+            saveproject={(data: Sim_data) => {
                 if (post) {
-                    console.log(post.id, content);
-                    await prisma.post.update({ where: { id: post.id }, data: { content: JSON.stringify(data) } })
+                    fetch('/api/post', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        method: 'POST',
+                        body: JSON.stringify({
+                            id: id,
+                            userId: localStorage.getItem("userId"),
+                            type: post.type,
+                            title: post.title,
+                            description: post.Description,
+                            public: post.Public,
+                            update: true,
+                            delete: false,
+                            content: JSON.stringify(data)
+                        }),
+                    }).catch((error) => console.log('error', error));
                 }
                 else
                     console.log("post not found!");
-                redirect("/explorer/" + id);
 
             }}
         /> : null}

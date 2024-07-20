@@ -1,16 +1,13 @@
 "use client";
-import { CSSProperties, useState } from 'react';
+import { CSSProperties, useEffect, useState } from 'react';
 import { motion } from 'framer-motion'
 import { useAtom } from 'jotai';
-import { currentUser_atom, users_atom } from '@/app/variables';
+import { currentUser_atom, user_type, users_atom } from '@/app/variables';
 
 const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 export interface LogInSignInProps {
-    users: { id: string, email: string, password: string, color: string }[],
-    createUser: (id: string, password: string, email?: string) => Promise<void>,
     logIn: (id: string) => Promise<void>,
-    signUp: (id: string, password: string, email?: string) => Promise<void>
 }
 
 const inputProps: CSSProperties = {
@@ -30,18 +27,26 @@ function Card(props: {
     setPassword: (b: string) => void,
     setEmail: (c: string) => void,
     proced: () => void,
-    users: {
-        id: string;
-        email: string;
-        password: string;
-        color: string;
-    }[],
     logging: boolean,
     alternative: () => void,
 }) {
     const setCurrentUser = useAtom(currentUser_atom)[1];
-    const setUsers = useAtom(users_atom)[1];
-    setUsers(props.users);
+    const [users, setUsers] = useState<user_type[]>([]);
+    const [action, setAction] = useState(false);
+
+    useEffect(() => {
+        fetch('/api/user', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((d) => {
+                setUsers(d);
+            })
+            .catch((error) => console.log('error', error));
+    }, [action]);
 
     return <div
         style={{
@@ -155,15 +160,16 @@ function Card(props: {
             whileTap={{ scale: 0.9 }}
             onClick={() => {
                 if (props.name.includes(' ') || props.name == '' || props.password.length < 8) return;
+                setAction(prev => !prev);
                 if (!props.logging) {
                     if (!emailRegex.test(props.email)) return;
-                    const user = props.users.find(user => user.id == props.name || user.email == props.email);
+                    const user = users.find(user => user.id == props.name || user.email == props.email);
                     if (user) return alert('username or email already in use');
                     props.proced();
                     setCurrentUser(props.name);
                     return;
                 }
-                const user = props.users.find(user => user.id == props.name || user.email == props.name);
+                const user = users.find(user => user.id == props.name || user.email == props.name);
                 if (!user) {
                     alert(`user called '${props.name}' does not exist`);
                     return;
@@ -216,12 +222,10 @@ function Card(props: {
 
 export default function LogInSignInComponent(props: LogInSignInProps) {
 
-    const USERS = props.users;
     const [name, setName] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [isLoggingIn, setIsLogginIn] = useState<boolean>(true);
-    const user = USERS.find(user => user.id == name || user.email == name);
 
     return <><div
         style={{
@@ -247,12 +251,25 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
             setName={setName}
             setPassword={setPassword}
             setEmail={setEmail}
-            users={USERS}
             proced={() => {
                 if (isLoggingIn) {
-                    props.logIn(user ? user.id : name);
+                    props.logIn(name);
                 } else {
-                    props.signUp(name, password, email);
+                    fetch('/api/user', {
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        method: 'POST',
+                        body: JSON.stringify({ id: name, email: email, password: password }),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (typeof (window != undefined)) {
+                                window.localStorage.setItem("userId", name);
+                            }
+                        })
+                        .catch((error) => console.log('error', error));
+
                 }
             }}
             alternative={() => {

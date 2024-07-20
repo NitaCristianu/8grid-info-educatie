@@ -1,51 +1,34 @@
+"use client"
 import { PrismaClient } from "@prisma/client/extension"
 import prisma from "../libs/prisma"
 import LogInSignInComponent from "./components/login-sigin";
 import ExitButton from "./components/upperTab";
 import { redirect } from "next/navigation";
 import GradientCircle from "../components/GradientCircle";
+import { useEffect, useState } from "react";
 
-async function getUsers() {
-    const users = await prisma.user.findMany();
+export default function Page() {
+    const [isClient, setIsClient] = useState(false);
 
-    return users;
-}
+    useEffect(() => {
+        setIsClient(true);
+    }, []);
 
-async function createUser(id: string, password: string, email = "") {
-    "use server"
-    await prisma.user.create({
-        data: {
-            id, password, email: email
-        }
-    })
-    redirect(`/account/${id}`)
-}
-
-
-export default async function Page() {
-    const users = await getUsers();
-
-    async function logIn(id: string) {
-        "use server";
-        redirect(`/account/${id}`)
+    if (!isClient) {
+        return null;
     }
-
-    return <div>
+    return <div
+        suppressHydrationWarning
+    >
         {/* <GradientBackground
             color1={{ r: 37, g: 40, b: 65 }}
             color2={{ r: 108, g: 189, b: 151 }}
         /> */}
 
         <LogInSignInComponent
-            users={users.map(user => ({ id: user.id, email: user.email, password: user.password, color: user.color }))}
-            createUser={createUser}
-            logIn={logIn}
-            signUp={createUser}
+            logIn={(id: string) => redirect(`/account/${id}`)}
         />
-        <ExitButton exit={async () => {
-            "use server";
-            redirect("/")
-        }} />
+        <ExitButton />
 
         <GradientCircle
             size={1.1}

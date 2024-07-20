@@ -25,8 +25,9 @@ export function Cell(props: { name: string, color: string, callBack: () => void 
 }
 
 export default function Taskbar(props: {
-    saveproject: (a: any) => Promise<void>
+    saveproject: (a: any) => void
 }) {
+    
     const divRef = useRef<HTMLDivElement>(null);
     const size = useSize();
     const [posY, setY] = useState<boolean>(true);

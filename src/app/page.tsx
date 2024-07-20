@@ -1,12 +1,24 @@
+"use client";
 import { redirect } from "next/navigation";
 import GradientCircle from "./components/GradientCircle";
 import Links from "./components/Links";
 import MainMenuLinkButton from "./components/MainMenuLinkButton";
 import { TextTransition } from "./components/TextTransition";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
 
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
+  
   return <div
+    suppressHydrationWarning
     style={{
       display: 'flex',
       justifyContent: 'center',

@@ -1,3 +1,4 @@
+"use client";
 import { CANVAS_SIZE } from "../data/consts";
 import { Position } from "../data/vars";
 

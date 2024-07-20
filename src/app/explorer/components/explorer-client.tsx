@@ -1,18 +1,34 @@
 "use client";
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { originalData } from '../[id]/components/explorer-client-post';
 import GradientCircle from '@/app/components/GradientCircle';
 import { element } from 'three/examples/jsm/nodes/Nodes.js';
+import { useRouter } from 'next/router';
 
 type types = 'Math' | 'Logic';
 const MATH_COLOR = ""
-export default function ExplorerClient(props: { posts: originalData[], redirect: (a: string) => void }) {
+export default function ExplorerClient(props: {}) {
     const [currentTab, setTab] = useState("Math");
     const color = currentTab == "Math" ? "rgb(35, 137, 209)" : "rgb(248, 117, 29)";
 
     const [isOpenSearch, setIsOpenSearch] = useState(false);
     const [searchInput, setSearchInput] = useState("");
+    const [posts, setPosts] = useState<originalData[]>([]);
+
+    useEffect(() => {
+        fetch('/api/post', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((d) => {
+                setPosts(d);
+            })
+            .catch((error) => console.log('error', error));
+    }, []);
 
     return <div
         style={{
@@ -127,14 +143,33 @@ export default function ExplorerClient(props: { posts: originalData[], redirect:
                 }}
 
             >
-                <svg height={'3.5vh'} viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill="#ffffff" fill-rule="evenodd" d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z"></path> </g></svg>
+                <svg
+                    height={'3.5vh'}
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                    <g
+                        id="SVGRepo_tracerCarrier"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                    ></g>
+                    <g id="SVGRepo_iconCarrier">
+                        <path
+                            fill={'#ffffff'}
+                            fillRule="evenodd"
+                            d="M4 9a5 5 0 1110 0A5 5 0 014 9zm5-7a7 7 0 104.2 12.6.999.999 0 00.093.107l3 3a1 1 0 001.414-1.414l-3-3a.999.999 0 00-.107-.093A7 7 0 009 2z"
+                        ></path>
+                    </g>
+                </svg>
                 <input
                     type='text'
                     style={{
                         background: 'none',
                         outline: 'none',
                         width: '100%',
-                        marginLeft : '1,vw',
+                        marginLeft: '1,vw',
                         height: '100%',
                         fontFamily: "Poppins",
                         fontSize: '2vh'
@@ -156,7 +191,9 @@ export default function ExplorerClient(props: { posts: originalData[], redirect:
                 rowGap: "2rem"
             }}
         >
-            {props.posts.filter(post => post.type == currentTab && post.title.toLowerCase().includes(searchInput) && post.Public).map(post => <motion.div
+            {posts.filter(post => post.type == currentTab && post.title.toLowerCase().includes(searchInput) && post.Public).map(post => <motion.a
+                href={`/explorer/${post.id}`}
+                key={post.id}
                 whileHover={{
                     border: "3.5px solid rgba(224, 224, 224, 0.69)",
                 }}
@@ -169,9 +206,6 @@ export default function ExplorerClient(props: { posts: originalData[], redirect:
                     padding: '1.2rem',
                     fontFamily: "Poppins",
                     backdropFilter: 'blur(1px)'
-                }}
-                onClick={() => {
-                    props.redirect(`/explorer/${post.id}`);
                 }}
             >
                 <h1
@@ -206,11 +240,29 @@ export default function ExplorerClient(props: { posts: originalData[], redirect:
                             fontWeight: 600,
                             userSelect: 'none',
                         }}
-                    >{post.likes.length || 0}</h1>
-                    <svg viewBox="0 0 24 24" width={'1.5rem'} fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z" fill={"white"}></path> </g></svg>
+                    >{Array.from(new Set(post.likes)).length || 0}</h1>
+                    <svg
+                        viewBox="0 0 24 24"
+                        width={'1.5rem'}
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                        <g
+                            id="SVGRepo_tracerCarrier"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                        ></g>
+                        <g id="SVGRepo_iconCarrier">
+                            <path
+                                d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                fill={'white'}
+                            ></path>
+                        </g>
+                    </svg>
                 </div>
 
-            </motion.div>)}
+            </motion.a>)}
         </div>
     </div>
 }

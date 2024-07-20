@@ -1,42 +1,73 @@
+"use client";
 import GradientCircle from "@/app/components/GradientCircle";
 import prisma from "@/app/libs/prisma";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import SettingsClient from "./components/settings-client";
 import { redirect } from "next/navigation";
 import ExitButton from "@/app/login/components/upperTab";
+import { originalData } from "@/app/explorer/[id]/components/explorer-client-post";
 
 
-export default async function (props: { params: { id: string } }) {
+export default function (props: { params: { id: string } }) {
     const post_id = props.params.id;
-    const post = await prisma.post.findUnique({ where: { id: post_id } });
+    const [post, setPost] = useState<originalData | null>(null);
     const color = post?.type == "Math" ? "rgb(30, 106, 247)" : "rgb(239, 94, 41)";
 
-    async function saveSettings(props: {
+    const [isClient, setIsClient] = useState(false);
+
+    useEffect(() => {
+        fetch('/api/post', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+        .then((response) => response.json())
+        .then((d?: originalData[]) => {
+            setPost(d?.find(post => post.id == post_id) || null);
+        })
+        .catch((error) => console.log('error', error));
+        setIsClient(true);
+    }, []);
+    if (!isClient) {
+        return null;
+    }
+    
+    function saveSettings(props: {
         title: string,
         description: string,
         public: boolean,
         deleted: boolean,
     }) {
-        "use server";
-        if (props.deleted) {
-            await prisma.post.delete({ where: { id: post_id } });
+        if (!post) return;
+        fetch('/api/post', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                id: post_id,
+                userId: localStorage.getItem("userId"),
+                type: post?.type,
+                title: props.title,
+                description: props.description,
+                public: props.public,
+                update: true,
+                delete: false
+            }),
+        }).catch((error) => console.log('error', error));
+        if (props.deleted)
             redirect("/");
-        } else {
-            await prisma.post.update({
-                where: { id: post_id },
-                data: {
-                    title: props.title,
-                    Description: props.description,
-                    Public: props.public
-                }
-            });
+        else
             redirect(`/explorer/${post_id}`);
-        }
+
 
     };
 
     if (!post) return;
-    return <div>
+    return <div
+        suppressHydrationWarning
+    >
         <GradientCircle
             x={-0.54}
             y={-1.4}
@@ -79,7 +110,7 @@ export default async function (props: { params: { id: string } }) {
             opacity={.6}
             size={1.8}
         />
-        <SettingsClient savePost={saveSettings} post={post} redirect={(async (href: string) => { "use server"; redirect(href) })} />
-        <ExitButton exit={async () => { "use server"; redirect("/"); }} />
+        <SettingsClient savePost={saveSettings} post={post} redirect={((href: string) => { redirect(href) })} />
+        <ExitButton />
     </div>
 }

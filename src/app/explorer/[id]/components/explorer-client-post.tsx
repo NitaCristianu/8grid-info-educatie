@@ -1,10 +1,8 @@
 "use client";
-import { currentUser_atom, post_type, user_type } from "@/app/variables";
-import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { user_type } from "@/app/variables";
+import { useEffect, useState } from "react";
 import Projectbutton from "./project-button";
 import Description from "./description";
-import { useAtom } from "jotai";
 import Comments from "./comments";
 import ExitButton from "@/app/login/components/upperTab";
 import { redirect } from "next/navigation";
@@ -22,18 +20,40 @@ export interface originalData {
 }
 
 export default function ExplorerClient(props: {
-    requestPostData: (postId?: string) => Promise<originalData | null>,
-    like: (postId: string, userId: string) => Promise<void>,
-    postComment: (userId: string, content: string) => Promise<void>,
-    goHome: () => void,
-    redirect: (href: string) => Promise<void>,
-    post_data: originalData | null,
-    users_data: user_type[] | null,
+    postId: string
 }) {
     // obtain post data
-    const [post_data, setPostData] = useState<originalData | null>(props.post_data);
-    const userId = typeof (window) != "undefined" ? localStorage.getItem("userId") : null;
-    const user_data = props.users_data?.find(user => user.id == userId);
+    const [post_data, setPostData] = useState<originalData | null>(null);
+    const [user_data, setUserData] = useState<user_type | null>(null);
+    const [action, setAction] = useState(false);
+
+    useEffect(() => {
+        fetch('/api/post', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((d) => {
+                const post = (d as originalData[]).find(post => post.id == props.postId);
+                setPostData(post || null);
+            })
+            .catch((error) => console.log('error', error));
+        fetch('/api/user', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((d) => {
+                const userId = typeof (window) != "undefined" ? localStorage.getItem("userId") : null;
+                setUserData((d as user_type[]).find(user => user.id == userId) || null);
+            })
+            .catch((error) => console.log('error', error));
+
+    }, [action])
 
     return <div
         style={{
@@ -57,23 +77,15 @@ export default function ExplorerClient(props: {
             }}
         >
             <Projectbutton
-                redirect={props.redirect}
                 post_data={post_data}
             />
             <Description
                 post_data={post_data}
                 user_data={user_data || null}
-                like={props.like}
             />
 
         </div>
-        <Comments
-            post_data={post_data}
-            postComment={props.postComment}
-            users={props.users_data || null}
-        />
-        <ExitButton
-            exit={props.goHome}
-        />
+        <Comments post_data={post_data} />
+        <ExitButton />
     </div>
 }

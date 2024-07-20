@@ -1,3 +1,4 @@
+"use client";
 import { HOLD_SHADOW_OFFSET } from "../class/Cip";
 import Pin, { INDICATOR_RAD, PIN_RADIUS, SCREEN_BOUND } from "../class/Pin";
 import { Inputs, Outputs } from "../data/elements";

@@ -19,21 +19,20 @@ import And from "../class/And";
 import Not from "../class/Not";
 import CustomChip from "../class/CustomChip";
 
-export default function Grid(props: { isEditable: boolean, data: Sim_data }) {
+export default function Grid(props: { isEditable: boolean, data: Sim_data | null }) {
     const size = useSize();
     const mouse = useMouse();
     const prevMouse = usePrevious(mouse);
     const ref = useRef<HTMLCanvasElement | null>(null);
 
+    const content = props.data;
     useEffect(() => {
-        const content = props.data;
-        console.log(content.connections[0].end.location.id);
-        console.log(content.cips[0]);
+        console.log(content);
         Connections.splice(0, Connections.length);
         Inputs.splice(0, Inputs.length);
         Outputs.splice(0, Outputs.length);
         Cips.splice(0, Cips.length);
-        Prefabs.splice(0, Cips.length);
+        Prefabs.splice(0, Prefabs.length);
         if (content && content.inputs) {
             content.inputs.forEach(input => {
                 Inputs.push(new Pin({ y: input.y, name: input.name, type: 'input', id: input.id }));
@@ -64,7 +63,7 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data }) {
                 Connections.push(new Connection({ start: connection.start, end: connection.end }));
             })
         }
-    }, []);
+    }, [content]);
     // Update and render useEffect
     useEffect(() => {
         const ctx = ref.current?.getContext('2d');

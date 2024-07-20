@@ -1,8 +1,5 @@
 "use client";
-import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Button3D from './3dbutton';
-import { redirect } from 'next/navigation';
 
 export interface MainMenuLinkProps {
     href: string,

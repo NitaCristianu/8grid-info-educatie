@@ -1,12 +1,13 @@
 "use client";
 import { CSSProperties } from "react";
 import MainMenuLinkButton from "./MainMenuLinkButton";
-import { useAtom } from "jotai";
-import { currentUser_atom } from "../variables";
 
 export default function Links(props: { style: CSSProperties }) {
 
-    const currentUser = useAtom(currentUser_atom)[0];
+    var currentUser = null;
+    if (typeof (window) != 'undefined') {
+        currentUser = localStorage.getItem("useId");
+    }
 
     return <div
         style={props.style}
