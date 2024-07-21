@@ -15,9 +15,9 @@ export default function SettingsClient(props: {
 
     return <div
         style={{
-            width: '50vw',
+            width: '40vw',
             height: '70vh',
-            marginLeft: '25vw',
+            marginLeft: '30vw',
             marginTop: '15vh',
             display: 'flex',
             flexDirection: 'column',
@@ -36,6 +36,7 @@ export default function SettingsClient(props: {
         >Settings</h1>
         <div
             style={{
+                width: '100%',
                 display: 'flex',
                 fontFamily: "Poppins",
                 background: "rgba(0, 0, 0, 0.18)",
@@ -57,10 +58,10 @@ export default function SettingsClient(props: {
                 type='text'
                 style={{
                     background: 'none',
-                    textAlign: 'center',
                     fontSize: '3vh',
                     fontWeight: 200,
                     outline: 'none',
+                    width: '100%'
                 }}
                 value={postTitle}
                 onChange={event => setPostTitle(event.target.value)}
@@ -70,6 +71,7 @@ export default function SettingsClient(props: {
         <div
             style={{
                 display: 'flex',
+                width: '100%',
                 fontFamily: "Poppins",
                 background: "rgba(0, 0, 0, 0.18)",
                 borderRadius: '1rem',
@@ -85,18 +87,16 @@ export default function SettingsClient(props: {
                 style={{
                     fontWeight: 400,
                     fontSize: '3vh',
-                    textAlign: 'center',
                 }}
             >Description</h1>
-            <ReactTextareaAutosize
+            <textarea
                 style={{
                     background: 'none',
-                    textAlign: 'center',
                     fontSize: '3vh',
                     fontWeight: 200,
                     outline: 'none',
                     resize: 'none',
-                    width: '30vw',
+                    minHeight: '25vh'
 
                 }}
                 value={description}
@@ -107,6 +107,7 @@ export default function SettingsClient(props: {
         <div
             style={{
                 display: 'flex',
+                width: '100%',
                 fontFamily: "Poppins",
                 background: "rgba(0, 0, 0, 0.18)",
                 borderRadius: '1rem',
@@ -114,7 +115,7 @@ export default function SettingsClient(props: {
                 paddingInline: '1rem',
                 border: "1.5px solid rgba(231, 231, 231, 0.29)",
                 zIndex: 2,
-                gap: '1rem',
+                gap: '3vw',
             }}
         >
             <h1
@@ -125,13 +126,14 @@ export default function SettingsClient(props: {
             >Public</h1>
             <motion.input
                 type='checkbox'
+
                 style={{
                     background: 'none',
-                    textAlign: 'center',
                     fontSize: '3vh',
                     fontWeight: 200,
                     outline: 'none',
                     width: '3vh',
+
                 }}
                 checked={isPublic}
                 onChange={event => setisPublic(prev => !prev)}
@@ -141,7 +143,8 @@ export default function SettingsClient(props: {
         <div
             style={{
                 display: 'flex',
-                gap: '2rem'
+                gap: '2rem',
+                marginTop: '10vh'
             }}
         >
             <motion.a
@@ -150,7 +153,6 @@ export default function SettingsClient(props: {
                     scale: 1.06
                 }}
                 style={{
-                    marginTop: '25vh',
                     fontSize: '3vh',
                     background: "rgba(89, 134, 89, 0.23)",
                     zIndex: 2,
@@ -160,7 +162,7 @@ export default function SettingsClient(props: {
                     color: "rgb(202, 255, 174)",
                     display: 'flex',
                     gap: '.7rem',
-                    paddingLeft : '1.4rem'
+                    paddingLeft: '1.4rem'
                 }}
                 onClick={() => {
                     props.savePost({
@@ -179,7 +181,6 @@ export default function SettingsClient(props: {
                     scale: 1.06
                 }}
                 style={{
-                    marginTop: '25vh',
                     fontSize: '3vh',
                     background: "rgba(65, 125, 222, 0.13)",
                     zIndex: 2,
@@ -200,17 +201,16 @@ export default function SettingsClient(props: {
                     scale: 1.06
                 }}
                 style={{
-                    marginTop: '25vh',
                     fontSize: '3vh',
                     background: "rgba(244, 244, 117, 0.03)",
-                    paddingLeft : '1.4rem',
+                    paddingLeft: '1.4rem',
                     zIndex: 2,
                     padding: '1rem',
                     borderRadius: '1.3rem',
                     border: '1.5px solid rgba(251, 217, 121, 0.42)',
                     color: "rgb(251, 246, 149)",
-                    display : 'flex',
-                    gap : '0.7rem'
+                    display: 'flex',
+                    gap: '0.7rem'
                 }}
                 href='/'
             >Discard

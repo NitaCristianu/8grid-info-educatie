@@ -191,78 +191,154 @@ export default function ExplorerClient(props: {}) {
                 rowGap: "2rem"
             }}
         >
-            {posts.filter(post => post.type == currentTab && post.title.toLowerCase().includes(searchInput) && post.Public).map(post => <motion.a
-                href={`/explorer/${post.id}`}
-                key={post.id}
-                whileHover={{
-                    border: "3.5px solid rgba(224, 224, 224, 0.69)",
-                }}
-                style={{
-                    width: '20vw',
-                    height: '20vh',
-                    border: "1.5px solid rgba(224, 224, 224, 0.29)",
-                    borderRadius: '2rem',
-                    background: "rgba(0, 0, 0, 0.16)",
-                    padding: '1.2rem',
-                    fontFamily: "Poppins",
-                    backdropFilter: 'blur(1px)'
-                }}
-            >
-                <h1
-                    style={{
-                        fontSize: '3vh',
-                        fontWeight: 600,
-                        color: color,
-                        textShadow: `0px 0px 20px ${color}`,
-                        userSelect: 'none'
+            {searchInput[0] == "@" ? posts.filter(post => post.type == currentTab && post.userId?.toLowerCase().includes(searchInput.slice(1, searchInput.length)) && post.Public).map(post =>
+                <motion.a
+                    href={`/explorer/${post.id}`}
+                    key={post.id}
+                    whileHover={{
+                        
+                        border: "3.5px solid rgba(224, 224, 224, 0.69)",
                     }}
-                >{post.title}</h1>
-                <p
                     style={{
-                        wordWrap: 'normal',
-                        userSelect: 'none',
-                        fontWeight: 200
-                    }}
-                >{post.Description}</p>
-                <div
-                    style={{
-                        alignSelf: 'flex-end',
-                        marginTop: 'auto',
-                        display: 'flex',
-                        flexDirection: 'row',
-                        gap: '0.5vw',
-
+                        width: '20vw',
+                        height: '20vh',
+                        border: "1.5px solid rgba(224, 224, 224, 0.29)",
+                        borderRadius: '2rem',
+                        background: "rgba(0, 0, 0, 0.16)",
+                        padding: '1.2rem',
+                        fontFamily: "Poppins",
+                        backdropFilter: 'blur(1px)'
                     }}
                 >
                     <h1
                         style={{
-                            fontSize: '1.5rem',
+                            fontSize: '3vh',
                             fontWeight: 600,
-                            userSelect: 'none',
+                            color: color,
+                            textShadow: `0px 0px 20px ${color}`,
+                            userSelect: 'none'
                         }}
-                    >{Array.from(new Set(post.likes)).length || 0}</h1>
-                    <svg
-                        viewBox="0 0 24 24"
-                        width={'1.5rem'}
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
-                        <g
-                            id="SVGRepo_tracerCarrier"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        ></g>
-                        <g id="SVGRepo_iconCarrier">
-                            <path
-                                d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
-                                fill={'white'}
-                            ></path>
-                        </g>
-                    </svg>
-                </div>
+                    >{post.title}</h1>
+                    <p
+                        style={{
+                            wordWrap: 'normal',
+                            userSelect: 'none',
+                            fontWeight: 200
+                        }}
+                    >{post.Description}</p>
+                    <div
+                        style={{
+                            alignSelf: 'flex-end',
+                            marginTop: 'auto',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '0.5vw',
 
-            </motion.a>)}
+                        }}
+                    >
+                        <h1
+                            style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 600,
+                                userSelect: 'none',
+                            }}
+                        >{Array.from(new Set(post.likes)).length || 0}</h1>
+                        <svg
+                            viewBox="0 0 24 24"
+                            width={'1.5rem'}
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                            <g
+                                id="SVGRepo_tracerCarrier"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                    fill={'white'}
+                                ></path>
+                            </g>
+                        </svg>
+                    </div>
+
+
+                </motion.a>)
+                :
+                posts.filter(post => post.type == currentTab && post.title.toLowerCase().includes(searchInput) && post.Public).map(post => <motion.a
+                    href={`/explorer/${post.id}`}
+                    key={post.id}
+                    whileHover={{
+                        border: "3.5px solid rgba(224, 224, 224, 0.69)",
+                    }}
+                    style={{
+                        width: '20vw',
+                        height: '20vh',
+                        border: "1.5px solid rgba(224, 224, 224, 0.29)",
+                        borderRadius: '2rem',
+                        background: "rgba(0, 0, 0, 0.16)",
+                        padding: '1.2rem',
+                        fontFamily: "Poppins",
+                        backdropFilter: 'blur(1px)'
+                    }}
+                >
+                    <h1
+                        style={{
+                            fontSize: '3vh',
+                            fontWeight: 600,
+                            color: color,
+                            textShadow: `0px 0px 20px ${color}`,
+                            userSelect: 'none'
+                        }}
+                    >{post.title}</h1>
+                    <p
+                        style={{
+                            wordWrap: 'normal',
+                            userSelect: 'none',
+                            fontWeight: 200
+                        }}
+                    >{post.Description}</p>
+                    <div
+                        style={{
+                            alignSelf: 'flex-end',
+                            marginTop: 'auto',
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '0.5vw',
+
+                        }}
+                    >
+                        <h1
+                            style={{
+                                fontSize: '1.5rem',
+                                fontWeight: 600,
+                                userSelect: 'none',
+                            }}
+                        >{Array.from(new Set(post.likes)).length || 0}</h1>
+                        <svg
+                            viewBox="0 0 24 24"
+                            width={'1.5rem'}
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+                            <g
+                                id="SVGRepo_tracerCarrier"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            ></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path
+                                    d="M2 9.1371C2 14 6.01943 16.5914 8.96173 18.9109C10 19.7294 11 20.5 12 20.5C13 20.5 14 19.7294 15.0383 18.9109C17.9806 16.5914 22 14 22 9.1371C22 4.27416 16.4998 0.825464 12 5.50063C7.50016 0.825464 2 4.27416 2 9.1371Z"
+                                    fill={'white'}
+                                ></path>
+                            </g>
+                        </svg>
+                    </div>
+
+                </motion.a>)}
         </div>
     </div>
 }

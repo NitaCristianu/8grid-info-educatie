@@ -9,7 +9,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
-    const data: { id: string, password: string, email: string, color?: string, update?: boolean, delete?: boolean } = await req.json();
+    const data: { id: string, age: number, password: string, email: string, color?: string, update?: boolean, delete?: boolean } = await req.json();
 
     if (data.delete) {
         await prisma.user.delete({
@@ -18,7 +18,6 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: "uploaded data success" });
     }
     if (data.update) {
-        console.log("updating user")
         await prisma.user.update({
             where: { id: data.id },
             data: {
@@ -34,8 +33,9 @@ export async function POST(req: Request) {
         await prisma.user.create({
             data: {
                 password: data.password,
-                id: data.id,
+                    id: data.id,
                 email: data.email,
+                age: data.age
             }
         })
     }

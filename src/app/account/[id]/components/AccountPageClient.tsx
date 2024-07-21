@@ -61,20 +61,37 @@ function PostPad(props: {
     type: 'logic' | 'math',
     color?: string,
     id?: string,
+    deleteMode: boolean,
+    deleted: boolean,
+    setDeletedPosts: any
 }) {
     return <motion.div
+        onClick={() => {
+            if (!props.deleteMode) return;
+            props.setDeletedPosts((prev: string[]) => {
+                const index = prev.findIndex(id => id == props.id);
+                if (index > -1) {
+                    return prev.filter(id => id != props.id);
+                }
+                return [...prev, props.id];
+            });
+        }}
+        animate={{
+            scale: props.deleteMode ? (props.deleted ? 0.9 : 0.95) : 1,
+        }}
         whileHover={{
-            background: "rgba(29,29,29,0.4)",
-            color: props.color || 'white',
+            background: !props.deleted ? "rgba(29,29,29,0.4)" : "rgba(198, 0, 0, 0.37)",
+            color: props.deleted ? "rgb(233, 141, 141)" : (props.color || 'white'),
         }}
         style={{
-            background: "rgba(31, 31, 31, 0.17)",
+            background: !props.deleted ? "rgba(31, 31, 31, 0.17)" : "rgba(119, 3, 3, 0.35)",
             borderRadius: '1rem',
             border: '1.5px solid rgba(255, 255, 255, 0.26)',
             display: 'flex',
             alignItems: 'center',
             padding: '3rem',
             width: '100%',
+            color: props.deleted ? "rgb(233, 141, 141)" : "rgb(224, 224, 224)",
             height: `0.4vh`,
             fontFamily: "Poppins"
         }}
@@ -155,6 +172,8 @@ export default function AccountPageClient(props: {
     const [userColor, setuserColor] = useState("#ffffff");
     const [user, setUser] = useState<user_type | null>(null);
     const [posts, setPosts] = useState<originalData[]>([]);
+    const [deleteMode, setDeleteMode] = useState(false);
+    const [deletedPosts, setDeletedPosts] = useState<string[]>([]);
     const [action, setAction] = useState(false);
 
     useEffect(() => {
@@ -167,7 +186,7 @@ export default function AccountPageClient(props: {
             .then((response) => response.json())
             .then((d) => {
                 const user = (d as user_type[]).find(user => user.id == userId) || null;
-                if (typeof (localStorage) != 'undefined'){
+                if (typeof (localStorage) != 'undefined') {
                     localStorage.setItem('userId', userId);
                 }
                 setUser(user);
@@ -175,7 +194,7 @@ export default function AccountPageClient(props: {
                     setuserColor(user.color);
             })
             .catch((error) => console.log('error', error));
-    }, [])
+    }, [userColor, userId])
     useEffect(() => {
         fetch('/api/post', {
             headers: {
@@ -191,7 +210,7 @@ export default function AccountPageClient(props: {
 
 
         setIsClient(true);
-    }, [])
+    }, [userId])
 
     const [leftSide, setLeftSide] = useState(false);
     if (userId == null) redirect('/');
@@ -307,13 +326,16 @@ export default function AccountPageClient(props: {
                     gap: '2vh'
                 }}
             >
-                <OptionButton
-                    callback={() => {
-                        setLeftSide(true);
-                        setMode('posts');
-                    }}
-                    content="Posts"
-                />
+                {
+                    user && user.age >= 18 ?
+                        <OptionButton
+                            callback={() => {
+                                setLeftSide(true);
+                                setMode('posts');
+                            }}
+                            content="Posts"
+                        /> : null
+                }
                 <OptionButton
                     callback={() => {
                         setMode('account');
@@ -486,9 +508,12 @@ export default function AccountPageClient(props: {
                             }}
                         >Create</motion.button>
                         <motion.button
-                            whileHover={{ background: "rgba(0, 0, 0, 0.24)" }}
+                            whileHover={{ background: deleteMode ? "rgba(179, 0, 0, 0.77)" : "rgb(31,31,31,0.37)", }}
+                            animate={{
+                                fontSize: !deleteMode ? '3vh' : '2.5vh',
+                                background: deleteMode ? "rgba(79, 0, 0, 0.77)" : "rgb(31,31,31,0.017)",
+                            }}
                             style={{
-                                background: "rgba(31, 31, 31, 0.17)",
                                 borderRadius: '1rem',
                                 width: '50%',
                                 height: '100%',
@@ -497,7 +522,42 @@ export default function AccountPageClient(props: {
                                 textShadow: "0px 0px 10px white",
                                 border: '1.5px solid rgba(255, 255, 255, 0.26)'
                             }}
-                        >Delete</motion.button>
+                            onClick={() => {
+                                if (!deleteMode) {
+                                    // delete mode is now active
+                                    setDeletedPosts([]);
+
+                                } else {
+                                    const posts = [...deletedPosts];
+                                    posts.forEach(id => {
+                                        fetch('/api/post', {
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                            },
+                                            method: 'POST',
+                                            body: JSON.stringify({
+                                                id: id,
+                                                delete: true
+                                            }),
+                                        }).then((data) => {
+                                            fetch('/api/post', {
+                                                headers: {
+                                                    'Content-Type': 'application/json',
+                                                },
+                                                method: 'GET',
+                                            })
+                                                .then((response) => response.json())
+                                                .then((d) => {
+                                                    setPosts(d.filter((post: any) => post.userId == userId));
+                                                })
+                                                .catch((error) => console.log('error', error));
+                                        })
+                                            .catch((error) => console.log('error', error));
+                                    })
+                                }
+                                setDeleteMode(prev => !prev);
+                            }}
+                        >{deleteMode ? 'Delete selected' : 'Delete'}</motion.button>
                         <motion.button
                             whileHover={{ background: "rgba(0, 0, 0, 0.24)" }}
                             style={{
@@ -554,6 +614,9 @@ export default function AccountPageClient(props: {
                         }}
                     >
                         {posts.slice(firstPostIndex, lastPostIndex).map(post => <PostPad
+                            deleteMode={deleteMode}
+                            deleted={deletedPosts.find(deletedPost => deletedPost == post.id) ? true : false}
+                            setDeletedPosts={setDeletedPosts}
                             key={post.id}
                             name={post.title}
                             type={post.type as "math" | "logic"}

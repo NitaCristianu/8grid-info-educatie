@@ -53,7 +53,7 @@ export default function ExplorerClient(props: {
             })
             .catch((error) => console.log('error', error));
 
-    }, [action])
+    }, [action, props.postId])
 
     return <div
         style={{

@@ -27,7 +27,6 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
 
     const content = props.data;
     useEffect(() => {
-        console.log(content);
         Connections.splice(0, Connections.length);
         Inputs.splice(0, Inputs.length);
         Outputs.splice(0, Outputs.length);
@@ -105,33 +104,32 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
 
     }, [size, prevMouse, mouse, Position.value, ConstructionVar2.value])
 
-    if (props.isEditable) {
-        // The detector for lines
-        useEffect(() => {
-            if (ConstructionVar1.value == ConstructionVar1.old) return;
-            if (ConstructionVar1.value == null) return;
+    // The detector for lines
+    useEffect(() => {
+        if (!props.isEditable) return;
+        if (ConstructionVar1.value == ConstructionVar1.old) return;
+        if (ConstructionVar1.value == null) return;
 
-            if (ConstructionVar1.old != null) {
-                // create connection
-                const startype = ConstructionVar1.old.type == 'gatetype' ? 'gatepin' : 'input';
-                const endtype = ConstructionVar1.value.type == 'gatetype' ? 'gatepin' : 'output';
+        if (ConstructionVar1.old != null) {
+            // create connection
+            const startype = ConstructionVar1.old.type == 'gatetype' ? 'gatepin' : 'input';
+            const endtype = ConstructionVar1.value.type == 'gatetype' ? 'gatepin' : 'output';
 
-                if (ConstructionVar1.old.type == 'output') return;
-                if (ConstructionVar1.value.type == 'input') return;
-                if (ConstructionVar1.old.id == ConstructionVar1.value.id) return;
-                if (ConstructionVar1.old.type == 'gatetype' && ConstructionVar1.old.subtype == 'input') return;
-                if (ConstructionVar1.value.type == 'gatetype' && ConstructionVar1.value.subtype == 'output') return;
+            if (ConstructionVar1.old.type == 'output') return;
+            if (ConstructionVar1.value.type == 'input') return;
+            if (ConstructionVar1.old.id == ConstructionVar1.value.id) return;
+            if (ConstructionVar1.old.type == 'gatetype' && ConstructionVar1.old.subtype == 'input') return;
+            if (ConstructionVar1.value.type == 'gatetype' && ConstructionVar1.value.subtype == 'output') return;
 
 
-                Connections.push(new Connection({
-                    start: { type: startype, location: { id: ConstructionVar1.old.id, index: ConstructionVar1.old.index } },
-                    end: { type: endtype, location: { id: ConstructionVar1.value.id, index: ConstructionVar1.value.index } }
-                }));
-                ConstructionVar1.reset();
-            }
+            Connections.push(new Connection({
+                start: { type: startype, location: { id: ConstructionVar1.old.id, index: ConstructionVar1.old.index } },
+                end: { type: endtype, location: { id: ConstructionVar1.value.id, index: ConstructionVar1.value.index } }
+            }));
+            ConstructionVar1.reset();
+        }
 
-        }, [ConstructionVar1.value])
-    }
+    }, [ConstructionVar1.value])
     return (<canvas
         ref={ref}
         width={size.x}

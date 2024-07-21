@@ -5,6 +5,7 @@ export interface user_type {
     password: string,
     email: string,
     color: string,
+    age : number
 };
 export interface post_type {
     id: string,

@@ -23,9 +23,11 @@ function Card(props: {
     name: string,
     password: string,
     email: string,
+    age: number,
     setName: (a: string) => void,
     setPassword: (b: string) => void,
     setEmail: (c: string) => void,
+    setAge: (c: number) => void,
     proced: () => void,
     logging: boolean,
     alternative: () => void,
@@ -109,13 +111,44 @@ function Card(props: {
                             textShadow: "0px 0px 10px rgba(255,100,100,0.5)",
                             opacity: !emailRegex.test(props.email) && props.email.length > 0 ? 1 : 0,
                             transition: 'opacity 0.2s ease-in-out',
-                            marginBottom: '2vh'
+                            marginBottom: '1vh'
 
                         }}
 
                     >Email is not valid</p>
                 </>
 
+            }
+            {
+                props.logging ? null : <>
+                    <p
+                        style={{
+                            fontFamily: "Poppins",
+                            fontWeight: 'light',
+                            textAlign: 'center',
+                            marginTop: '1vh',
+                            color: "rgba(114, 165, 247, 0.53)",
+                            textShadow: "0px 0px 10px rgba(100, 154, 255, 0.5)",
+                            transition: 'opacity 0.2s ease-in-out',
+                            fontSize: '2vh'
+                        }}
+                    >
+                        Age : {props.age}
+                    </p>
+                    <input
+                        type='range'
+                        min={1}
+                        max={100}
+
+                        style={{
+                            ...inputProps,
+                            marginBottom: '3vh',
+                        }}
+                        placeholder={"Enter Email"}
+                        value={props.age}
+                        onChange={event => props.setAge(Number(event.currentTarget.value))}
+                    />
+                </>
             }
             <input
                 type='password'
@@ -130,7 +163,7 @@ function Card(props: {
                     fontWeight: 'light',
                     textAlign: 'center',
                     marginTop: '1vh',
-                    marginBottom: props.logging ? '5vh' : '7vh',
+                    marginBottom: props.logging ? '5vh' : '3vh',
                     color: "rgba(247, 114, 114, 0.53)",
                     textShadow: "0px 0px 10px rgba(255,100,100,0.5)",
                     opacity: props.password.length >= 8 || props.password == "" ? 0 : 1,
@@ -141,7 +174,10 @@ function Card(props: {
             >Password must have 8 characters at least</p>
         </form>
         <motion.a
-            href={`/account/${props.name}`}
+            href={!(props.name.includes(' ') || props.name == '' || props.password.length < 8) &&
+                ((!props.logging && emailRegex.test(props.email) && !users.find(user => user.id == props.name)) ||
+                    (props.logging && users.find(user => user.id == props.name && user.password == props.password))) ?
+                `/account/${props.name}` : '/login'}
             style={{
                 textAlign: "center",
                 fontWeight: 600,
@@ -223,6 +259,7 @@ function Card(props: {
 export default function LogInSignInComponent(props: LogInSignInProps) {
 
     const [name, setName] = useState<string>("");
+    const [age, setAge] = useState(18);
     const [password, setPassword] = useState<string>("");
     const [email, setEmail] = useState<string>("");
     const [isLoggingIn, setIsLogginIn] = useState<boolean>(true);
@@ -251,6 +288,8 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
             setName={setName}
             setPassword={setPassword}
             setEmail={setEmail}
+            age={age}
+            setAge={setAge}
             proced={() => {
                 if (isLoggingIn) {
                     props.logIn(name);
@@ -260,7 +299,7 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
                             'Content-Type': 'application/json',
                         },
                         method: 'POST',
-                        body: JSON.stringify({ id: name, email: email, password: password }),
+                        body: JSON.stringify({ id: name, email: email, password: password, age: age }),
                     })
                         .then((response) => response.json())
                         .then((data) => {

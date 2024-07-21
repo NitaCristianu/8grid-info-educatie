@@ -23,7 +23,7 @@ export default function Comments(props: {
             .then((response) => response.json())
             .then((d) => {
                 setUsers(d);
-                setUserId(typeof(window) != 'undefined' ? localStorage.getItem("userId") : null);
+                setUserId(typeof (window) != 'undefined' ? localStorage.getItem("userId") : null);
             })
             .catch((error) => console.log('error', error));
     }, [])
@@ -74,8 +74,6 @@ export default function Comments(props: {
                 }}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => {
-                    console.log(userId)
-                    console.log(props.post_data)
                     if (userId && userId.length > 0 && comment.length > 0 && props.post_data) {
                         fetch('/api/comment', {
                             headers: {
@@ -124,12 +122,13 @@ export default function Comments(props: {
                 flexDirection: 'column',
             }}
         >
-            {comments.map(comment => {
+            {comments.map((comment, i) => {
                 const commentData = JSON.parse(comment) as { user: string, comment: string };
                 if (!commentData.user || !commentData.comment || !users) return null;
                 const user = (users || []).find(user => user.id == commentData.user);
                 if (!user) return null;
                 return <div
+                    key={i}
                     style={{
                         width: '100%',
                         borderRadius: '1rem',
