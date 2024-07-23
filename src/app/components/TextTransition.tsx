@@ -2,7 +2,7 @@
 import { motion, MotionProps, MotionStyle } from 'framer-motion';
 import { HTMLAttributes } from 'react';
 
-export function TextTransition(props: { initial: string, after?: string, gapWords?: number, style?: MotionStyle }) {
+export default function TextTransition(props: { initial: string, after?: string, gapWords?: number, style?: MotionStyle }) {
     return <motion.h1
         initial={"initial"}
         whileHover={'hovered'}
