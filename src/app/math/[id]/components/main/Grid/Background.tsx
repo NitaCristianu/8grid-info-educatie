@@ -54,7 +54,7 @@ const BACKGROUND_SHADER = `
     }
 `;
 
-const Background = () => {
+export default function () {
     const size = useResize();
     const bgr = useAtom(BACKGROUND)[0];
     const parsed = parseRGB(bgr);
@@ -80,5 +80,3 @@ const Background = () => {
         </Canvas>
     );
 };
-
-export default Background;

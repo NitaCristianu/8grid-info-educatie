@@ -184,10 +184,10 @@ void main(){
 }
 `;
 
-const BackgroundShader = (props: any) => {
+function BackgroundShader(props: any) {
     var { size, offset, color } = props;
     color = color || { r: 0, g: 0, b: 0 };
-    
+
     const uniformsRef = useRef({
         time: { value: offset },
         size: { value: new THREE.Vector2(0, 0) },
@@ -202,7 +202,7 @@ const BackgroundShader = (props: any) => {
     // Update the size uniform when the size changes
     useEffect(() => {
         uniformsRef.current.size.value.set(size.x, size.y);
-        uniformsRef.current.color.value.set(color.r,color.g,color.b);
+        uniformsRef.current.color.value.set(color.r, color.g, color.b);
     }, [size, props.color]);
 
     return (
@@ -216,14 +216,14 @@ const BackgroundShader = (props: any) => {
     );
 };
 
-const Background4 = (props: {
+export default function Background4(props: {
     offset?: number,
     opacity?: number,
     x?: number,
     y?: number,
     color: { r: number, g: number, b: number },
 
-}) => {
+}) {
     const size = useSize();
     return (
         <div
@@ -242,5 +242,3 @@ const Background4 = (props: {
         </div>
     );
 };
-
-export default Background4;

@@ -79,7 +79,7 @@ void main()
 }
 `;
 
-const BackgroundShader = (props: any) => {
+function BackgroundShader(props: any) {
     const { size, offset } = props;
     const uniformsRef = useRef({
         time: { value: offset },
@@ -107,13 +107,13 @@ const BackgroundShader = (props: any) => {
     );
 };
 
-const Background3 = (props: {
+export default function Background3(props: {
     offset?: number,
     opacity?: number,
     x?: number,
     y?: number
 
-}) => {
+}) {
     const size = useSize();
 
     return (
@@ -133,5 +133,3 @@ const Background3 = (props: {
         </div>
     );
 };
-
-export default Background3;

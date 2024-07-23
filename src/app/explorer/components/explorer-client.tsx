@@ -87,10 +87,11 @@ export default function ExplorerClient(props: {}) {
                 height: '8vh',
                 display: 'flex',
                 gap: '4vw',
-                padding: '1rem'
+                padding: '1rEem'
             }}
         >
             {['Math', 'Logic'].map(element => <div
+                key={element}
                 style={{
                     height: '100%',
                     width: '7vw',
@@ -196,7 +197,7 @@ export default function ExplorerClient(props: {}) {
                     href={`/explorer/${post.id}`}
                     key={post.id}
                     whileHover={{
-                        
+
                         border: "3.5px solid rgba(224, 224, 224, 0.69)",
                     }}
                     style={{
