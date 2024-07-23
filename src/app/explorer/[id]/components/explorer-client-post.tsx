@@ -85,7 +85,7 @@ export default function ExplorerClient(props: {
             />
 
         </div>
-        <Comments post_data={post_data} />
+        <Comments post_id={props.postId} />
         <ExitButton />
     </div>
 }

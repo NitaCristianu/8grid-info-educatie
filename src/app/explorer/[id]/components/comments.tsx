@@ -5,13 +5,13 @@ import { user_type } from "@/app/variables";
 import ReactTextareaAutosize from "react-textarea-autosize";
 
 export default function Comments(props: {
-    post_data: originalData | null,
+    post_id: string
 }) {
 
     const [comment, setCommentPost] = useState("");
     const [userId, setUserId] = useState(typeof (window) != "undefined" ? localStorage.getItem("userId") : null);
     const [users, setUsers] = useState<user_type[] | null>(null);
-    const [comments, setComments] = useState(props.post_data?.Comments || []);
+    const [comments, setComments] = useState<any[]>([]);
 
     useEffect(() => {
         fetch('/api/user', {
@@ -26,6 +26,19 @@ export default function Comments(props: {
                 setUserId(typeof (window) != 'undefined' ? localStorage.getItem("userId") : null);
             })
             .catch((error) => console.log('error', error));
+        fetch('/api/post', {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'GET',
+        })
+            .then((response) => response.json())
+            .then((d: originalData[]) => {
+                const comments_d = d.find(post => post.id == props.post_id)?.Comments || [];
+                setComments(comments_d)
+            })
+            .catch((error) => console.log('error', error));
+
     }, [])
 
     return <div
@@ -74,13 +87,13 @@ export default function Comments(props: {
                 }}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => {
-                    if (userId && userId.length > 0 && comment.length > 0 && props.post_data) {
+                    if (userId && userId.length > 0 && comment.length > 0 && props.post_id && props.post_id.length > 0) {
                         fetch('/api/comment', {
                             headers: {
                                 'Content-Type': 'application/json',
                             },
                             method: 'POST',
-                            body: JSON.stringify({ userId, postId: props.post_data.id, content: comment }),
+                            body: JSON.stringify({ userId, postId: props.post_id, content: comment }),
                         })
                             .catch((error) => console.log('error', error));
 
