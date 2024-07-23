@@ -141,7 +141,7 @@ export default function Home() {
         style={{
           fontWeight: 300,
           fontSize: '1.6vh',
-          width: '17vw'
+          width: '19vw'
         }}
         gapWords={5}
       />
