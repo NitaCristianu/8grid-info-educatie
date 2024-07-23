@@ -1,7 +1,6 @@
 "use client"
 import { motion } from 'framer-motion';
 import { originalData } from './explorer-client-post';
-import { TextTransition } from '@/app/components/TextTransition';
 import { redirect } from 'next/navigation';
 
 export default function Projectbutton(props: {
