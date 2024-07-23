@@ -2,24 +2,21 @@ import prisma from "@/app/libs/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-    const { userId, postId } = await req.json();
+    try {
+        const { userId, content, postId } = await req.json();
 
-    const post = await prisma.post.findUnique({
-        where: { id: postId }
-    });
-
-    if (!post) {
-        return NextResponse.json({ message: "Post not found" }, { status: 404 });
-    }
-
-    await prisma.post.update({
-        where: {
-            id: postId
-        },
-        data: {
-            likes: [...post.likes, userId]
+        if (!userId || !content || !postId) {
+            return NextResponse.json({ message: "Missing required fields" }, { status: 400 });
         }
-    })
 
-    return NextResponse.json({ message: "uploaded data success" });
+        console.log({ userId, content, postId });
+
+        await prisma.post.findUnique({
+            where: { id: postId }
+        });
+
+        return NextResponse.json({ message: "Success" });
+    } catch (error) {
+        return NextResponse.json({ message: "Internal server error" }, { status: 500 });
+    }
 }
