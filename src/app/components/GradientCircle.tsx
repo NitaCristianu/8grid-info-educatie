@@ -7,11 +7,13 @@ export default function GradientCircle(props: {
     size: string | number,
     color: string,
     color2?: string,
-    opacity?: number
+    opacity?: number,
+    zIndex? : number
 }) {
     return <motion.div
         style={{
             position: 'fixed',
+            zIndex : props.zIndex || 'auto',
             opacity: props.opacity || 1,
             left: typeof (props.x) == 'number' ? `${Math.round(props.x * 100)}%` : props.x,
             top: typeof (props.y) == 'number' ? `${Math.round(props.y * 100)}%` : props.y,

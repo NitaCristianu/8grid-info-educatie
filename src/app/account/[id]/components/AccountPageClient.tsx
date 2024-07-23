@@ -9,6 +9,7 @@ import { color, motion } from 'framer-motion';
 import { v4 } from "uuid";
 import { rotate } from "three/examples/jsm/nodes/Nodes.js";
 import { originalData } from "@/app/explorer/[id]/components/explorer-client-post";
+import Background4 from "./Background4";
 
 const POSTS_PER_PAGE = 5;
 
@@ -18,7 +19,7 @@ function OptionButton(props: { callback: () => void, href?: string, content: str
             onCanPlay={props.callback}
             style={{
                 fontSize: '2.5vh',
-                backdropFilter: "blur(3px)",
+                backdropFilter: "blur(7px)",
                 background: "rgba(49, 49, 59, 0.22)",
                 padding: '1vh',
                 borderRadius: '1rem',
@@ -160,6 +161,23 @@ function PostPad(props: {
     </motion.div>
 }
 
+function hexToRgb(hex: string): { r: number, g: number, b: number } | null {
+    if (!/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/.test(hex)) {
+        return { r: 0, g: 0, b: 0 };
+    }
+
+    hex = hex.replace(/^#/, '');
+
+    if (hex.length === 3) {
+        hex = hex.split('').map(char => char + char).join('');
+    }
+
+    const r = parseInt(hex.slice(0, 2), 16) || 0;
+    const g = parseInt(hex.slice(2, 4), 16) || 0;
+    const b = parseInt(hex.slice(4, 6), 16) || 0;
+
+    return { r, g, b };
+}
 
 export default function AccountPageClient(props: {
     UserId: string,
@@ -227,41 +245,58 @@ export default function AccountPageClient(props: {
 
 
     return <>
+        <Background4
+            opacity={.3}
+            color={hexToRgb(userColor) as any}
+
+        />
+        <GradientCircle
+            x={-.4}
+            y={-1.5}
+            color={userColor}
+            opacity={0.2}
+            size={1.8}
+            zIndex={-5}
+        />
+        <GradientCircle
+            x={-.5}
+            y={-.1}
+            color={userColor}
+            opacity={0.1}
+            size={2}
+            zIndex={-1}
+        />
+        <GradientCircle
+            x={.3}
+            y={-.1}
+            color={"rgb(89, 32, 130)"}
+            opacity={0.3}
+            size={1}
+            zIndex={1}
+        />
+        <GradientCircle
+            x={-.3}
+            y={0}
+            color={"rgb(87, 176, 236)"}
+            opacity={0.2}
+            size={1}
+            zIndex={1}
+        />
         <div
             style={{
                 justifyContent: 'center',
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
-                height: 'calc(100%-10vh)',
+                height: '90vh',
                 flexDirection: 'column',
                 gap: '3vh',
                 fontFamily: "Poppins",
                 position: "fixed",
                 left: leftSide ? "-50vh" : 0,
-                top: '10vh',
                 transition: "left 0.35s ease-in-out"
             }}
         >
-            <GradientCircle
-                x={-.4}
-                y={-1.5}
-                color={userColor}
-                opacity={0.3}
-                size={1.8}
-            />
-            <GradientCircle
-                x={.2}
-                y={-.4}
-                color={"rgba(51, 18, 104, 0.5)"}
-                size={1.8}
-            />
-            <GradientCircle
-                x={-1}
-                y={-.4}
-                color={"rgba(39, 84, 230, 0.2)"}
-                size={1.8}
-            />
             <div
                 style={{
                     marginTop: '10vh',
@@ -474,7 +509,7 @@ export default function AccountPageClient(props: {
                             fontSize: '3vh',
 
                         }}
-                    >{userId}'s posts</h1>
+                    >{userId}&apos;s posts</h1>
                     <br />
                     <div
                         style={{
@@ -707,6 +742,9 @@ export default function AccountPageClient(props: {
         <div
             style={{
                 width: '100vw',
+                position: 'fixed',
+                left: 0,
+                top: 0,
                 height: '100vh',
                 backdropFilter: creating ? "blur(15px)" : 'none',
                 transition: 'backdropFilter 0.5s ease-in-out',

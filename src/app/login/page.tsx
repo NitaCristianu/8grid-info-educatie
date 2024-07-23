@@ -6,6 +6,7 @@ import ExitButton from "./components/upperTab";
 import { redirect } from "next/navigation";
 import GradientCircle from "../components/GradientCircle";
 import { useEffect, useState } from "react";
+import Background3 from "./components/Background3";
 
 export default function Page() {
     const [isClient, setIsClient] = useState(false);
@@ -24,12 +25,14 @@ export default function Page() {
             color1={{ r: 37, g: 40, b: 65 }}
             color2={{ r: 108, g: 189, b: 151 }}
         /> */}
+        <Background3
 
+        />
         <LogInSignInComponent
             logIn={(id: string) => redirect(`/account/${id}`)}
         />
         <ExitButton />
-
+        {/* 
         <GradientCircle
             size={1.1}
             x={0}
@@ -47,6 +50,6 @@ export default function Page() {
             x={0.2}
             y={0.1}
             color="rgba(107, 191, 39, 0.22)"
-        />
+        /> */}
     </div>
 }

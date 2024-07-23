@@ -54,7 +54,7 @@ function Card(props: {
         style={{
             display: 'flex',
             flexDirection: 'column',
-            height: '60vh'
+            height: '60vh',
         }}
     >
 
@@ -64,7 +64,7 @@ function Card(props: {
                 justifyContent: 'center',
                 flexDirection: 'column',
                 padding: props.logging ? '9vh' : '7vh',
-                background: 'none'
+                background: 'none',
             }}
         >
             <input
@@ -272,7 +272,7 @@ export default function LogInSignInComponent(props: LogInSignInProps) {
             width: '50vh',
             margin: 'auto',
             borderRadius: '5rem',
-            backdropFilter: 'blur(3px)',
+            backdropFilter: 'blur(10px)',
             border: "1.5px solid rgba(255, 255, 255, 0.42)",
             background: "rgba(170, 170, 170, 0.1)",
             fontFamily: 'Poppins',

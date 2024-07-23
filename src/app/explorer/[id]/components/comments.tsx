@@ -128,7 +128,7 @@ export default function Comments(props: {
                 const user = (users || []).find(user => user.id == commentData.user);
                 if (!user) return null;
                 return <div
-                    key={i}
+                    key={comment + i.toFixed(0)}
                     style={{
                         width: '100%',
                         borderRadius: '1rem',
