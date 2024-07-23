@@ -22,7 +22,6 @@ export default function GradientCircle(props: {
             mixBlendMode: 'hard-light',
             background: `radial-gradient(${props.color} 0%, #00000000 50%)`,
             userSelect: 'none',
-            transition: "background 2.7s",
             pointerEvents: 'none'
         }}
 
