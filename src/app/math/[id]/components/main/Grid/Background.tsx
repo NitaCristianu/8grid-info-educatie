@@ -54,12 +54,12 @@ const BACKGROUND_SHADER = `
     }
 `;
 
-export default function () {
+export default function Background() {
     const size = useResize();
     const bgr = useAtom(BACKGROUND)[0];
     const parsed = parseRGB(bgr);
     const uniformsRef = useRef({
-        offset: new THREE.Uniform(new THREE.Vector2(0, 0)),
+        offset: new THREE.Uniform(new THREE.Vector2(0.001, 0)),
         size: new THREE.Uniform(new THREE.Vector2(size.x, size.y)),
         background: new THREE.Uniform(new THREE.Vector3(parsed.r, parsed.g, parsed.b))
     });
