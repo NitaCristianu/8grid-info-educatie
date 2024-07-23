@@ -4,7 +4,7 @@ import Pin, { INDICATOR_RAD, PIN_RADIUS, SCREEN_BOUND } from "../class/Pin";
 import { Inputs, Outputs } from "../data/elements";
 import { MouseObject } from "../hooks/useMouse";
 
-export default function (ctx: CanvasRenderingContext2D, size: { x: number, y: number }, mouse: MouseObject, prevMouse: MouseObject) {
+export default function PlacingPins(ctx: CanvasRenderingContext2D, size: { x: number, y: number }, mouse: MouseObject, prevMouse: MouseObject) {
     const w = Math.abs(size.x * SCREEN_BOUND - size.x * SCREEN_BOUND / 2) + 2 * PIN_RADIUS + HOLD_SHADOW_OFFSET * 2;
     const h = 2 * INDICATOR_RAD + HOLD_SHADOW_OFFSET;
     if (mouse.position.x / size.x < 0.03 && mouse.position.y < 0.87 * size.y) {
@@ -45,7 +45,7 @@ export default function (ctx: CanvasRenderingContext2D, size: { x: number, y: nu
         ctx.fillStyle = color;
         ctx.shadowColor = color;
         ctx.shadowBlur = 10;
-        const x = size.x * (1-SCREEN_BOUND) - PIN_RADIUS / 2 - HOLD_SHADOW_OFFSET;
+        const x = size.x * (1 - SCREEN_BOUND) - PIN_RADIUS / 2 - HOLD_SHADOW_OFFSET;
         const y = mouse.position.y - INDICATOR_RAD - HOLD_SHADOW_OFFSET / 2;
         ctx.roundRect(x, y, w, h, 16);
         ctx.fill();

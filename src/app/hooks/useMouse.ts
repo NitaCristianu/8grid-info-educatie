@@ -19,7 +19,7 @@ export interface MouseObject {
   buttons: MouseButtons;
 }
 
-const useMouse = (): MouseObject => {
+export default function useMouse(): MouseObject {
   const [mouse_pos, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
   const [mouse_btn, setMouseButtons] = useState<MouseButtons>({ left: false, middle: false, right: false, doubleClick: false });
 
@@ -62,5 +62,3 @@ const useMouse = (): MouseObject => {
 
   return { position: mouse_pos, buttons: mouse_btn };
 };
-
-export default useMouse;

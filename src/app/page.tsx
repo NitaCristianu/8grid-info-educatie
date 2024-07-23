@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import GradientCircle from "./components/GradientCircle";
 import Links from "./components/Links";
 import MainMenuLinkButton from "./components/MainMenuLinkButton";
-import { TextTransition } from "./components/TextTransition";
+import TextTransition from "./components/TextTransition";
 import { useEffect, useState } from "react";
 import Background from "./math/[id]/components/main/Grid/Background";
 import Background2 from "./components/Background2";
@@ -155,7 +155,7 @@ export default function Home() {
 
       <Links
         style={{
-          zIndex : 2,
+          zIndex: 2,
           width: '50vh',
           height: '10vh',
           display: 'flex',
