@@ -6,14 +6,20 @@ export async function POST(req: Request) {
 
     const commentData = JSON.stringify({ user: userId, comment: content });
 
+    const post = await prisma.post.findUnique({
+        where: { id: postId }
+    });
+
+    if (!post) {
+        return NextResponse.json({ message: "Post not found" }, { status: 404 });
+    }
+
     await prisma.post.update({
         where: {
             id: postId
         },
         data: {
-            Comments: {
-                push: commentData
-            },
+            Comments: [...post.Comments, commentData]
         }
     })
 
