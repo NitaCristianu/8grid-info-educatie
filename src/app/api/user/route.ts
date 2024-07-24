@@ -12,6 +12,9 @@ export async function POST(req: Request) {
     const data: { id: string, age: number, password: string, email: string, color?: string, update?: boolean, delete?: boolean } = await req.json();
 
     if (data.delete) {
+        await prisma.post.deleteMany({
+            where: { userId: data.id }
+        })
         await prisma.user.delete({
             where: { id: data.id }
         })
@@ -33,7 +36,7 @@ export async function POST(req: Request) {
         await prisma.user.create({
             data: {
                 password: data.password,
-                    id: data.id,
+                id: data.id,
                 email: data.email,
                 age: data.age
             }

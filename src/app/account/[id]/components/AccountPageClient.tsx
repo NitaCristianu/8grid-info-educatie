@@ -4,7 +4,7 @@ import GradientCircle from "@/app/components/GradientCircle";
 import { currentUser_atom, post_type, user_type, users_atom } from "@/app/variables";
 import { useAtom } from "jotai";
 import { redirect } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { CSSProperties, useEffect, useMemo, useState } from "react";
 import { color, motion } from 'framer-motion';
 import { v4 } from "uuid";
 import { rotate } from "three/examples/jsm/nodes/Nodes.js";
@@ -12,8 +12,9 @@ import { originalData } from "@/app/explorer/[id]/components/explorer-client-pos
 import Background4 from "./Background4";
 
 const POSTS_PER_PAGE = 5;
+const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-function OptionButton(props: { callback: () => void, href?: string, content: string, color?: string }) {
+function OptionButton(props: { callback: () => void, href?: string, content: string, color?: string, style?: CSSProperties }) {
     if (!props.href)
         return <motion.button
             onCanPlay={props.callback}
@@ -26,7 +27,8 @@ function OptionButton(props: { callback: () => void, href?: string, content: str
                 border: "1.5px solid rgba(213, 213, 213, 0.34)",
                 width: "30vh",
                 color: props.color || 'white',
-                textAlign: 'center'
+                textAlign: 'center',
+                ...props.style
 
             }}
             whileHover={{
@@ -188,6 +190,8 @@ export default function AccountPageClient(props: {
     if (userId == null) redirect('/');
 
     const [userColor, setuserColor] = useState("#ffffff");
+    const [email, setEmail] = useState("loading@gmail.com");
+    const [password, setPasword] = useState("loading...");
     const [user, setUser] = useState<user_type | null>(null);
     const [posts, setPosts] = useState<originalData[]>([]);
     const [deleteMode, setDeleteMode] = useState(false);
@@ -208,8 +212,11 @@ export default function AccountPageClient(props: {
                     localStorage.setItem('userId', userId);
                 }
                 setUser(user);
-                if (user && userColor == "#ffffff")
+                if (user && userColor == "#ffffff") {
                     setuserColor(user.color);
+                    setEmail(user.email);
+                    setPasword(user.password);
+                }
             })
             .catch((error) => console.log('error', error));
     }, [userColor, userId])
@@ -408,7 +415,7 @@ export default function AccountPageClient(props: {
                     <div
                         style={{
                             display: 'flex',
-                            gap: '1vh',
+                            gap: '1vw',
                             background: "rgba(12, 12, 12, 0.2)",
                             borderRadius: '1rem',
                             padding: '.5rem',
@@ -416,13 +423,14 @@ export default function AccountPageClient(props: {
                             width: '35vh',
                             justifyContent: 'center',
                             alignItems: 'center',
+                            backdropFilter: 'blur(4px)'
                         }}
                     >
                         <h1
                             style={{
                                 fontFamily: "Poppins",
                                 alignItems: 'center',
-                                fontWeight: 300
+                                fontWeight: 300,
                             }}
                         >Change user color</h1>
                         <input
@@ -434,39 +442,89 @@ export default function AccountPageClient(props: {
                                 background: 'none',
                                 outline: 'none',
                                 width: '3rem',
-                                height: '2rem'
+                                height: '3rem',
                             }}
                         />
                     </div>
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
+                    <br />
+                    <div
                         style={{
-                            marginTop: '4vh',
-                            fontWeight: '500',
-                            fontSize: '3vh',
-                            fontFamily: "Poppins",
+                            display: 'flex',
+                            gap: '1vh',
+                            background: emailRegex.test(email) ? "rgba(12, 12, 12, 0.2)" : "rgba(43, 0, 0, 0.3)",
+                            backdropFilter: 'blur(4px)',
+                            borderRadius: '1rem',
+                            padding: '.5rem',
+                            border: '1.5px solid rgba(253, 253, 253, 0.21)',
+                            width: '35vh',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
                         }}
-                        onClick={() => {
-                            if (user) {
-                                fetch('/api/user', {
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                    },
-                                    method: 'POST',
-                                    body: JSON.stringify({
-                                        id: user.id,
-                                        email: user.email,
-                                        color: userColor,
-                                        update: true,
-                                    }),
-                                })
-                                    .then((response) => response.json())
-                                    .catch((error) => console.log('error', error));
-                                setLeftSide(false);
-                            }
-                        }}
+                    >
+                        <h1
+                            style={{
+                                fontFamily: "Poppins",
+                                alignItems: 'center',
+                                fontWeight: 300,
+                            }}
+                        >Change email</h1>
+                        <motion.input
+                            type="email"
+                            onChange={(event) => setEmail(event.currentTarget.value)}
+                            value={email}
+                            animate={{
+                                color: emailRegex.test(email) ? userColor : "red",
 
-                    >Save</motion.button>
+                            }}
+                            placeholder={user?.email}
+                            style={{
+                                background: 'none',
+                                outline: 'none',
+                                textAlign: 'center',
+
+                            }}
+                        />
+                    </div>
+                    <br />
+                    <div
+                        style={{
+                            display: 'flex',
+                            gap: '1vh',
+                            background: password.length >= 8 ? "rgba(12, 12, 12, 0.2)" : "rgba(43, 0, 0, 0.3)",
+                            backdropFilter: 'blur(4px)',
+                            borderRadius: '1rem',
+                            padding: '.5rem',
+                            border: '1.5px solid rgba(253, 253, 253, 0.21)',
+                            width: '35vh',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            flexDirection: 'column',
+                        }}
+                    >
+                        <h1
+                            style={{
+                                fontFamily: "Poppins",
+                                alignItems: 'center',
+                                fontWeight: 300,
+                            }}
+                        >Change password</h1>
+                        <motion.input
+                            type="password"
+                            onChange={(event) => setPasword(event.currentTarget.value)}
+                            value={password}
+                            placeholder="new password"
+                            animate={{
+                                color: password.length >= 8 ? userColor : "red",
+                            }}
+                            style={{
+                                background: 'none',
+                                outline: 'none',
+                                textAlign: 'center',
+
+                            }}
+                        />
+                    </div>
 
                     <div
                         style={{
@@ -476,6 +534,33 @@ export default function AccountPageClient(props: {
                             gap: '2vh'
                         }}
                     >
+                        <OptionButton
+                            style={{
+                                cursor: emailRegex.test(email) && password.length >= 8 ? "auto" : "not-allowed",
+                            }}
+                            callback={() => {
+                                if (user && emailRegex.test(email) && password.length >= 8) {
+                                    fetch('/api/user', {
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                        },
+                                        method: 'POST',
+                                        body: JSON.stringify({
+                                            id: user.id,
+                                            email,
+                                            color: userColor,
+                                            password,
+                                            update: true,
+                                        }),
+                                    })
+                                        .then((response) => response.json())
+                                        .catch((error) => console.log('error', error));
+                                    setLeftSide(false);
+                                }
+
+                            }}
+                            content="Save"
+                        />
                         <OptionButton
                             href="/"
                             callback={() => {
@@ -490,6 +575,18 @@ export default function AccountPageClient(props: {
                             href="/"
                             callback={() => {
                                 setLeftSide(false);
+                                fetch('/api/user', {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                    method: 'POST',
+                                    body: JSON.stringify({
+                                        id: props.UserId,
+                                        delete: true
+                                    }),
+                                })
+                                    .then((response) => response.json())
+                                    .catch((error) => console.log('error', error));
                             }}
                             color={userColor}
                             content="Delete user"

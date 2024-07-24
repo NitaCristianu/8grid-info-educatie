@@ -63,14 +63,15 @@ export default function ExplorerClient(props: {
             width: '100vw',
             height: '100vh',
             background: post_data?.type == "Math" ? "rgb(0, 19, 52)" : "rgb(19, 9, 1)",
-            gap: '2rem'
+            gap: '2rem',
+            overflowY : 'hidden',
+            overflowX : 'hidden',
         }}
     >
         <div
             style={{
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '2rem',
                 height: 'calc(100vh - 2rem)',
                 marginTop: '6vh',
                 width: '55vw',

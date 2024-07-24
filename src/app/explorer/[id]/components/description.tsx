@@ -20,7 +20,6 @@ export default function Description(props: {
     return <motion.div
         style={{
             width: '100%',
-            height: 'calc(40vh - 6rem)',
             borderRadius: '1rem',
             // border: "1.5px solid rgba(219, 219, 219, 0.65)",
             // background: "rgba(13, 13, 13, 0.5)",
