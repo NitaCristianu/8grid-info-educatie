@@ -10,6 +10,7 @@ export interface Prefab {
     inputsNum : number,
     outputFormulas : string[],
     name : string,
+    desc? : string,
     color : string
 }
 

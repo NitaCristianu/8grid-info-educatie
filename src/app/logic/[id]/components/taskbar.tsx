@@ -70,6 +70,7 @@ export default function Taskbar(props: {
                         inputsNum: prefab.inputsNum,
                         name: prefab.name,
                         outputFormulas: prefab.outputFormulas,
+                        desc : prefab.desc,
                         color: prefab.color,
                     }))
                     const cips_data = Cips.map(cip => ({

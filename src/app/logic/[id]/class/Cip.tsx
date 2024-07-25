@@ -4,7 +4,7 @@ import { inCircle, inRect } from "../utils/math";
 import { voltage } from "../interfaces/keywords";
 import Connection, { gateLocation } from "./Connection";
 import { ConstructionVar1, Position, SelectedElements } from "../data/vars";
-import { Connections } from "../data/elements";
+import { Connections, Prefabs } from "../data/elements";
 import { SELECT_COLOR } from "../data/consts";
 
 export const PIN_SPACING_Y = 32;
@@ -86,6 +86,10 @@ export default class Cip {
         if (inrect && mouse.buttons.left && !prevMouse.buttons.left) {
             this.holding = true;
         }
+        if (!inrect && mouse.buttons.right && !prevMouse.buttons.right) {
+            SelectedElements.set((SelectedElements.value || []).filter(item => item != this.id));
+            this.selected = false;
+        }
         if (inrect && mouse.buttons.doubleClick) {
             this.selected = true;
             SelectedElements.set([...SelectedElements.value || [], this.id]);
@@ -156,7 +160,7 @@ export default class Cip {
         this.inputs[index] = value;
     }
 
-    draw(ctx: CanvasRenderingContext2D) {
+    draw(ctx: CanvasRenderingContext2D, mouse: MouseObject) {
 
         const position = Position.value || { x: 0, y: 0 };
         if (this.holding || this.selected) {
@@ -205,7 +209,7 @@ export default class Cip {
                 ctx.shadowBlur = 10;
                 ctx.shadowColor = HIGH_COLOR;
             }
-            ctx.fillStyle = val == 'high' && this.getConnectionAt(i+this.inputsNum/2) ? HIGH_COLOR : LOW_COLOR;
+            ctx.fillStyle = val == 'high' && this.getConnectionAt(i + this.inputsNum / 2) ? HIGH_COLOR : LOW_COLOR;
             ctx.arc(pos.x, pos.y, SUBPIN_RADIUS, 0, 2 * Math.PI);
             ctx.fill();
             ctx.shadowBlur = 0;
@@ -226,6 +230,24 @@ export default class Cip {
             ctx.arc(pos.x, pos.y, SUBPIN_RADIUS, 0, 2 * Math.PI);
             ctx.fill();
             ctx.shadowBlur = 0;
+        }
+        if (this.holding) {
+            var t = '';
+            if (this.tag == 'and') {
+                t = 'only active if both inputs are active'
+            } else if (this.tag == 'not') {
+                t = 'inverses the input'
+            } else {
+                const prefab = Prefabs.find(prefab => prefab.name == this.tag);
+                if (prefab) { t = prefab.desc || "" }
+            }
+            if (t.length > 0) {
+                ctx.beginPath();
+                ctx.fillStyle = "rgba(255,255,255,.8)";
+                ctx.font = `normal ${FONT_SIZE/1.5}px Poppins`;
+                ctx.fillText(t, mouse.position.x, mouse.position.y);
+                
+            }
         }
 
     }

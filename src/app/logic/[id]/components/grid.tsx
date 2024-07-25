@@ -95,17 +95,19 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
                 Prefabs.push({
                     color: prefab.color,
                     name: prefab.name,
+                    desc: (prefab.desc || ""),
                     inputsNum: prefab.inputsNum,
                     outputFormulas: prefab.outputFormulas
                 })
             })
+
             content.cips.forEach(cip => {
                 if (cip.name.toLowerCase() == "and") {
                     Cips.push(new And({ x: cip.x, y: cip.y, id: cip.id }));
                 } else if (cip.name.toLowerCase() == "not") {
                     Cips.push(new Not({ x: cip.x, y: cip.y, id: cip.id }));
                 } else if (content.prefabs.find(prefab => prefab.name == cip.name)) {
-                    const prefab = content.prefabs.find(prefab => prefab.name);
+                    const prefab = content.prefabs.find(prefab => cip.name == prefab.name);
                     if (prefab)
                         Cips.push(new CustomChip({ x: cip.x, y: cip.y, id: cip.id, inputsNum: prefab.inputsNum, outputFormulas: prefab.outputFormulas, tag: prefab.name, color: prefab.color }));
                 }
@@ -141,7 +143,7 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
 
         // DRAWING EVERY ELEMENT
         Connections.forEach(connection => connection.draw(ctx));
-        Cips.forEach(cip => cip.draw(ctx));
+        Cips.forEach(cip => cip.draw(ctx, mouse));
         Inputs.forEach(input => input.draw(ctx, size.x * CANVAS_SIZE[0]));
         Outputs.forEach(input => input.draw(ctx, size.x * CANVAS_SIZE[0]));
 

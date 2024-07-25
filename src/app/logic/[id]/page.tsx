@@ -29,6 +29,7 @@ export interface Sim_data {
         inputsNum: number;
         name: string;
         outputFormulas: string[];
+        desc? : string,
         color: string;
     }[];
     cips: {
@@ -65,10 +66,7 @@ export default function Home(props: { params: { id: string } }) {
         })
             .then((response) => response.json())
             .then((d) => {
-                console.log(d)
                 const post = (d as originalData[]).find(post => post.id == id) || null;
-                console.log(post)
-                console.log(post?.title, post?.content);
                 setPost(post);
                 if (post) {
                     const content = post?.content.length > 0 ? post.content : "{}";

@@ -15,7 +15,6 @@
     clip-path: inset(0 round 2rem);
     border: 2px solid rgba(255, 255, 255, 0.4);
     padding: 1rem;
-    gap: 2rem;
     overflow: hidden;
 }
 

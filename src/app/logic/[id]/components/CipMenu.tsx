@@ -6,11 +6,13 @@ import styles from './cipmenu.module.css';
 import useFrame from '../hooks/useFrame';
 import { convertRgbToRgba } from '../utils/colors';
 import { Cips, Inputs, Outputs, Prefabs } from '../data/elements';
+import ReactTextareaAutosize from 'react-textarea-autosize';
 
 export default function CipMenu() {
     const [isVisible, setVisible] = useState<boolean>(CreatingCustomChip.value != null);
-    const [CipColor, setCipColor] = useState<string>("#ff0000");
-    const [CipName, setCipName] = useState<string>("My Div");
+    const [CipColor, setCipColor] = useState<string>("#aaaaaa");
+    const [CipDescription, setCipName] = useState<string>("");
+    const [CipName, setCipDescription] = useState<string>("");
 
 
 
@@ -21,11 +23,10 @@ export default function CipMenu() {
     return <>
         <div
             className={styles.bgr}
+
             style={{
-                backdropFilter: isVisible ? 'blur(7px)' : 'none',
+                backdropFilter: isVisible ? 'blur(2px)' : 'none',
                 transition: 'backdropFilter 0.4s ease-in-out',
-
-
             }}
         >
         </div>
@@ -41,12 +42,12 @@ export default function CipMenu() {
             <div
                 className={styles.menubgr}
                 style={{
-                    background: `radial-gradient(${CipColor}30,${"rgba(106, 95, 226, 0.24)"})`,
+                    background: `radial-gradient(${CipColor}30,${"rgba(106, 95, 226, 0)"})`,
+                    marginTop : "-90vh"
                 }}
             />
             <div
                 style={{
-                    width: '100%',
                     display: 'flex',
                     justifyContent: 'center',
                     height: '4rem',
@@ -54,14 +55,6 @@ export default function CipMenu() {
                     alignItems: 'center',
                 }}
             >
-
-                <h1
-                    style={{
-                        fontSize: 'xx-large',
-                        fontFamily: "Poppins",
-                        fontWeight: 'light',
-                    }}
-                >Name your cip:</h1>
                 <input
                     style={{
                         fontSize: 'xx-large',
@@ -73,18 +66,52 @@ export default function CipMenu() {
                         outline: 'none',
                         background: 'none',
                         borderRadius: '1rem',
-                        width: Math.max(CipName.length * 16, 12 * 16),
                         padding: '0.5rem',
                         overflow: 'auto',
                         cursor: isVisible ? "auto" : 'default',
+                        textAlign: 'center'
                     }}
                     type='text'
-                    placeholder={CipName}
+                    placeholder={"Name your cip"}
                     content={CipName}
                     onChange={e => {
                         setCipName(e.target.value);
                     }}
-                    contentEditable
+
+                />
+            </div>
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    gap: '1rem',
+                    alignItems: 'center',
+                }}
+            >
+                <textarea
+                    style={{
+                        fontSize: 'large',
+                        fontFamily: "Poppins",
+                        fontWeight: 'normal',
+                        pointerEvents: "all",
+                        userSelect: "all",
+                        border: '0px solid white',
+                        width: '25vw',
+                        outline: 'none',
+                        background: 'none',
+                        borderRadius: '1rem',
+                        padding: '0.5rem',
+                        overflow: 'auto',
+                        cursor: isVisible ? "auto" : 'default',
+                        textAlign: 'center',
+                        resize: 'none'
+                    }}
+                    placeholder={"Describe your cip"}
+                    content={CipDescription}
+                    onChange={e => {
+                        setCipDescription(e.target.value);
+                    }}
+                    
 
                 />
             </div>
@@ -95,8 +122,9 @@ export default function CipMenu() {
                         background: 'none',
                         outline: 'none',
                         border: 'none',
-                        width: '5rem',
-                        height: '3rem',
+                        width: '5vw',
+                        height: '5vh',
+                        marginTop: '6vh',
                         borderRadius: 32
                     }}
                     value={CipColor}
@@ -114,14 +142,14 @@ export default function CipMenu() {
                 }}
             >
                 <motion.button
+                    animate={{
+                        opacity: CipDescription.length > 0 ? 1 : 0,
+                        color: CipColor,
+                    }}
                     style={{
                         fontSize: 'xx-large',
                         fontFamily: "Poppins",
                         fontWeight: 'bolder',
-                        transition: 'opacity 0.3s ease-in-out',
-                        opacity: CipName.length > 0 ? 1 : 0,
-                        color: "rgb(153, 232, 171)",
-                        textShadow: "0px 0px 10px rgba(97, 226, 101, 0.69)",
                     }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: .95 }}
@@ -132,10 +160,14 @@ export default function CipMenu() {
                         // Cips.splice(0, Cips.length);
                         Prefabs.push({
                             color: CipColor,
-                            name: CipName,
+                            name: CipDescription,
+                            desc: CipName,
                             inputsNum: Inputs.length,
                             outputFormulas: Outputs.map(out => out.formula)
                         })
+                        setCipName("");
+                        setCipColor("#aaaaaa");
+                        setCipDescription("");
                     }}
                 >SAVE</motion.button>
                 <motion.button
@@ -143,8 +175,6 @@ export default function CipMenu() {
                         fontSize: 'xx-large',
                         fontFamily: "Poppins",
                         fontWeight: 'bolder',
-                        color: "rgb(238, 112, 112)",
-                        textShadow: "0px 0px 10px red",
                     }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: .95 }}
