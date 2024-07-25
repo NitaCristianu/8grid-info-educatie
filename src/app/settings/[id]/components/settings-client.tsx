@@ -16,7 +16,6 @@ export default function SettingsClient(props: {
     return <div
         style={{
             width: '40vw',
-            height: '70vh',
             marginLeft: '30vw',
             marginTop: '15vh',
             display: 'flex',
@@ -157,6 +156,7 @@ export default function SettingsClient(props: {
                     background: "rgba(89, 134, 89, 0.23)",
                     zIndex: 2,
                     padding: '1rem',
+                    textWrap: 'nowrap',
                     borderRadius: '1.3rem',
                     border: '1.5px solid rgba(180, 243, 153, 0.42)',
                     color: "rgb(202, 255, 174)",
@@ -186,6 +186,7 @@ export default function SettingsClient(props: {
                     zIndex: 2,
                     padding: '1rem',
                     borderRadius: '1.3rem',
+                    textWrap: 'nowrap',
                     border: '1.5px solid rgba(29, 112, 237, 0.42)',
                     color: "rgb(61, 100, 255)",
                     display: 'flex',
@@ -210,6 +211,7 @@ export default function SettingsClient(props: {
                     border: '1.5px solid rgba(251, 217, 121, 0.42)',
                     color: "rgb(251, 246, 149)",
                     display: 'flex',
+                    textWrap: 'nowrap',
                     gap: '0.7rem'
                 }}
                 href='/'

@@ -17,6 +17,7 @@ export function Cell(props: { name: string, color: string, callBack: () => void 
             backgroundColor: color,
             borderColor: props.color,
             boxShadow: `0px 0px 10px ${color}`,
+            textWrap : 'nowrap',
         }}
         onClick={props.callBack}
         whileTap={{ scale: 1.05 }}

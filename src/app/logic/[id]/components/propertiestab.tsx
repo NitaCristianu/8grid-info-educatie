@@ -59,6 +59,15 @@ export default function Properties() {
         whileTap={{ scale: 0.95 }}
         onTap={() => {
             SelectedElements.value?.forEach((element) => {
+                const connection = Connections.find(connection => connection.id == element);
+                if (connection) {
+                    const B = connection.end.location.id;
+                    const index = Outputs.findIndex(out => out.id == B);
+                    if (index > -1) {
+                        Outputs[index].setFormula("");
+                        Outputs[index].set("unset");
+                    }
+                }
                 removeElementById(Inputs, element);
                 removeElementById(Outputs, element);
                 removeElementById(Cips, element);

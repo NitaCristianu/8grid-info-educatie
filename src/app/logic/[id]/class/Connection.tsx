@@ -1,6 +1,8 @@
 import { v4 } from "uuid";
 import { Cips, Inputs, Outputs } from "../data/elements";
 import { voltage } from "../interfaces/keywords";
+import { MouseObject } from "../hooks/useMouse";
+import { SelectedElements } from "../data/vars";
 
 export interface gateLocation {
     id: string, index?: number
@@ -36,6 +38,7 @@ export default class Connection {
     public declare voltage: voltage;
     public declare startFormula: string;
     public declare id: string;
+    public declare selected: boolean;
 
     constructor(props: ConnectionProps) {
         this.start = props.start;
@@ -48,11 +51,40 @@ export default class Connection {
         this.endy = 0;
         this.voltage = 'low';
         this.startFormula = '';
+        this.selected = false;
     }
 
-    update() {
+    update(mouse: MouseObject, prevMouse: MouseObject) {
         var startVal = false;
         this.voltage = 'low';
+
+        if (mouse.buttons.doubleClick) {
+            const a = { x: this.startx, y: this.starty };
+            const b = { x: this.endx, y: this.endy };
+            const p = { ...mouse.position }
+
+            const ab = { x: b.x - a.x, y: b.y - a.y };
+            const ap = { x: p.x - a.x, y: p.y - a.y };
+            const t = Math.max(0, Math.min((ab.x * ap.x + ab.y * ap.y) / (ab.x * ab.x + ab.y * ab.y), 1));
+            const c = { x: a.x + t * ab.x, y: a.y + t * ab.y };
+            const pc = { x: c.x - p.x, y: c.y - p.y };
+            const dist = pc.x * pc.x + pc.y * pc.y;
+            if (dist < LINE_WIDTH * LINE_WIDTH) {
+                if (!SelectedElements.value?.find(s => s == this.id)) {
+                    SelectedElements.set([...SelectedElements.value || [], this.id]);
+                }
+                this.selected = true;
+            }
+        }
+        if (this.selected && mouse.buttons.right && prevMouse.buttons.right) {
+            var index = (SelectedElements.value || []).findIndex(s => s == this.id);
+
+            if (index > -1) {
+                const value = (SelectedElements.value || []).filter(el => el != this.id);
+                SelectedElements.set(value);
+            }
+            this.selected = false;
+        }
 
         if (this.start.type == 'gatepin') {
             const startcip_index = Cips.findIndex(cip => cip.id == this.start.location.id);
@@ -107,6 +139,16 @@ export default class Connection {
         ctx.lineTo(this.endx, this.endy);
         ctx.stroke();
         ctx.shadowBlur = 0;
+
+        if (this.selected) {
+            ctx.beginPath();
+            ctx.strokeStyle = "rgba(255,255,255,0.7)";
+            ctx.lineWidth = LINE_WIDTH * 1.5;
+            ctx.moveTo(this.startx, this.starty);
+            ctx.lineTo(this.endx, this.endy);
+            ctx.stroke();
+
+        }
     }
 
 }

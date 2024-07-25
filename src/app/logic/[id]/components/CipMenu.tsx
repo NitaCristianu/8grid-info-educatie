@@ -23,7 +23,7 @@ export default function CipMenu() {
             className={styles.bgr}
             style={{
                 backdropFilter: isVisible ? 'blur(7px)' : 'none',
-                transition: 'backdropFilter 0.4s ease-in-out'
+                transition: 'backdropFilter 0.4s ease-in-out',
 
 
             }}
@@ -33,8 +33,9 @@ export default function CipMenu() {
             style={{
                 opacity: isVisible ? 1 : 0,
                 transition: 'opacity 0.3s ease-in-out',
-                pointerEvents: isVisible ? 'all' : 'none'
+                pointerEvents: isVisible ? 'all' : 'none',
             }}
+            onContextMenu={(event) => event.preventDefault()}
             className={styles.menu}
         >
             <div
@@ -50,7 +51,7 @@ export default function CipMenu() {
                     justifyContent: 'center',
                     height: '4rem',
                     gap: '1rem',
-                    alignItems: 'center'
+                    alignItems: 'center',
                 }}
             >
 
@@ -74,7 +75,8 @@ export default function CipMenu() {
                         borderRadius: '1rem',
                         width: Math.max(CipName.length * 16, 12 * 16),
                         padding: '0.5rem',
-                        overflow: 'auto'
+                        overflow: 'auto',
+                        cursor: isVisible ? "auto" : 'default',
                     }}
                     type='text'
                     placeholder={CipName}

@@ -3,7 +3,7 @@
 // the respectives classes are found in the class folder
 
 import { useEffect, useRef } from "react";
-import useMouse from "../hooks/useMouse";
+import useMouse, { MouseObject } from "../hooks/useMouse";
 import useSize from "../hooks/useSize"
 import { Cips, Connections, Inputs, Outputs, Prefabs } from "../data/elements";
 import { usePrevious } from "../hooks/usePrevious";
@@ -22,8 +22,60 @@ import CustomChip from "../class/CustomChip";
 export default function Grid(props: { isEditable: boolean, data: Sim_data | null }) {
     const size = useSize();
     const mouse = useMouse();
-    const prevMouse = usePrevious(mouse);
+    const prevMouse = usePrevious(mouse) as MouseObject;
     const ref = useRef<HTMLCanvasElement | null>(null);
+
+    // The detector for lines
+    useEffect(() => {
+        const ctx = ref.current?.getContext('2d');
+        if (ctx == null || ctx == undefined) return;
+        if (!props.isEditable) return;
+        if (ConstructionVar1.value == ConstructionVar1.old) return;
+        if (ConstructionVar1.value == null) return;
+        if (ConstructionVar1.old != null) {
+            // create connection
+            const startype = ConstructionVar1.old.type == 'gatetype' ? 'gatepin' : 'input';
+            const endtype = ConstructionVar1.value.type == 'gatetype' ? 'gatepin' : 'output';
+
+            if (ConstructionVar1.old.type == 'output') return;
+            const start = ConstructionVar1.value;
+            var x = 0;
+            var y = 0;
+            if (start.type == 'gatetype') {
+                const startcip_index = Cips.findIndex(cip => cip.id == start.id);
+                if (startcip_index > -1) {
+                    const cip = Cips[startcip_index];
+                    const startpos = cip.getPinPosition(start.index || 0, 'output');
+                    x = startpos.x;
+                    y = startpos.y;
+                }
+            } else {
+                const input = Inputs.find(i => i.id == start.id);
+                if (input) {
+                    x = input.getEndx();
+                    y = input.y;
+                }
+            }
+
+            ctx.beginPath();
+            ctx.setLineDash([15, 15]);
+            ctx.strokeStyle = "rgba(255,255,255,0.3)";
+            ctx.moveTo(x, y);
+            ctx.lineTo(mouse.position.x, mouse.position.y);
+            ctx.stroke();
+            if (ConstructionVar1.old.id == ConstructionVar1.value.id) return;
+            if (ConstructionVar1.old.type == 'gatetype' && ConstructionVar1.old.subtype == 'input') return;
+            if (ConstructionVar1.value.type == 'gatetype' && ConstructionVar1.value.subtype == 'output') return;
+
+
+            Connections.push(new Connection({
+                start: { type: startype, location: { id: ConstructionVar1.old.id, index: ConstructionVar1.old.index } },
+                end: { type: endtype, location: { id: ConstructionVar1.value.id, index: ConstructionVar1.value.index } }
+            }));
+            ConstructionVar1.reset();
+        }
+
+    }, [ConstructionVar1.value, mouse])
 
     const content = props.data;
     useEffect(() => {
@@ -63,6 +115,7 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
             })
         }
     }, [content]);
+
     // Update and render useEffect
     useEffect(() => {
         const ctx = ref.current?.getContext('2d');
@@ -78,7 +131,7 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
 
         if (!ConstructionVar2.value && !CreatingCustomChip.value && !ChangingProps.value) {
             // UPDAING EVERY ELEMENT
-            Connections.forEach(connection => connection.update());
+            Connections.forEach(connection => connection.update(mouse, prevMouse));
             Cips.forEach(cip => cip.update(mouse, prevMouse));
             Inputs.forEach(input => input.update(mouse, prevMouse));
             Outputs.forEach(input => input.update(mouse, prevMouse));
@@ -104,32 +157,6 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
 
     }, [size, prevMouse, mouse, Position.value, ConstructionVar2.value])
 
-    // The detector for lines
-    useEffect(() => {
-        if (!props.isEditable) return;
-        if (ConstructionVar1.value == ConstructionVar1.old) return;
-        if (ConstructionVar1.value == null) return;
-
-        if (ConstructionVar1.old != null) {
-            // create connection
-            const startype = ConstructionVar1.old.type == 'gatetype' ? 'gatepin' : 'input';
-            const endtype = ConstructionVar1.value.type == 'gatetype' ? 'gatepin' : 'output';
-
-            if (ConstructionVar1.old.type == 'output') return;
-            if (ConstructionVar1.value.type == 'input') return;
-            if (ConstructionVar1.old.id == ConstructionVar1.value.id) return;
-            if (ConstructionVar1.old.type == 'gatetype' && ConstructionVar1.old.subtype == 'input') return;
-            if (ConstructionVar1.value.type == 'gatetype' && ConstructionVar1.value.subtype == 'output') return;
-
-
-            Connections.push(new Connection({
-                start: { type: startype, location: { id: ConstructionVar1.old.id, index: ConstructionVar1.old.index } },
-                end: { type: endtype, location: { id: ConstructionVar1.value.id, index: ConstructionVar1.value.index } }
-            }));
-            ConstructionVar1.reset();
-        }
-
-    }, [ConstructionVar1.value])
     return (<canvas
         ref={ref}
         width={size.x}

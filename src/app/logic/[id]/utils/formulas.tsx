@@ -37,11 +37,56 @@ matches.forEach(({ match, offset }) => {
 });
 
 */
+
+export function numberToLetterMapping(): string[] {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const mapping: string[] = [];
+    for (let i = 0; i < alphabet.length; i++) {
+        mapping[i] = alphabet[i];
+    }
+    return mapping;
+}
+
+export function letterToNumberMapping(): Map<string, number> {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const mapping = new Map<string, number>();
+    for (let i = 0; i < alphabet.length; i++) {
+        mapping.set(alphabet[i], i);
+    }
+    return mapping;
+}
+
+export function replaceNumbersWithLetters(input: string): string {
+    const mapping = numberToLetterMapping();
+
+    return input.replace(/\d+/g, (match) => {
+        const num = parseInt(match, 10);
+        if (num >= 0 && num < 26) {
+            return mapping[num];
+        }
+        return match; // If the number is out of range, keep it as is
+    });
+}
+
+export function replaceLettersWithNumbers(input: string): string {
+    const mapping = letterToNumberMapping();
+
+    return input.replace(/[A-Z]/gi, (match) => {
+        const upperCaseMatch = match.toUpperCase();
+        if (mapping.has(upperCaseMatch)) {
+            return mapping.get(upperCaseMatch)!.toString();
+        }
+        return match; // If the letter is out of range, keep it as is
+    });
+}
+
 export const ReplaceNumbersWithFormulas = (formula: string, formulas: string[]) => {
     if (formula == '-1' || formula.length == 0) return '';
+    formulas = formulas.map(formula=>replaceNumbersWithLetters(formula));
     const parsed = formula.replace(/\d+/g, (match) => {
         const index = parseInt(match, 10);
         return `${formulas[index]}`;
     });
-    return parsed;
+    console.log(parsed);
+    return replaceLettersWithNumbers(parsed);
 }

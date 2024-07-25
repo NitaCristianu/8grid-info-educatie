@@ -22,17 +22,17 @@ export default function (props: { params: { id: string } }) {
             },
             method: 'GET',
         })
-        .then((response) => response.json())
-        .then((d?: originalData[]) => {
-            setPost(d?.find(post => post.id == post_id) || null);
-        })
-        .catch((error) => console.log('error', error));
+            .then((response) => response.json())
+            .then((d?: originalData[]) => {
+                setPost(d?.find(post => post.id == post_id) || null);
+            })
+            .catch((error) => console.log('error', error));
         setIsClient(true);
     }, []);
     if (!isClient) {
         return null;
     }
-    
+
     function saveSettings(props: {
         title: string,
         description: string,
@@ -112,5 +112,5 @@ export default function (props: { params: { id: string } }) {
         />
         <SettingsClient savePost={saveSettings} post={post} redirect={((href: string) => { redirect(href) })} />
         <ExitButton />
-    </div>
+    </div >
 }

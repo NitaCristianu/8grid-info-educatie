@@ -9,12 +9,12 @@ export interface CustomChipProps extends CipProperties {
 
 export default class CustomChip extends Cip {
 
-    public declare originalOutputFormulas;
+    private declare originalOutputFormulas;
 
     constructor(props?: CustomChipProps) {
         super(props);
         this.outputFormulas = props?.outputFormulas || this.outputFormulas;
-        this.originalOutputFormulas = this.outputFormulas;
+        this.originalOutputFormulas = [...this.outputFormulas] as const;
         this.outputsNum = this.outputFormulas.length;
     }
 
@@ -27,12 +27,8 @@ export default class CustomChip extends Cip {
             if (badcase) return;
             const InputFormulas = InputConnections.map((connection) => (connection as Connection).startFormula);
             const OutputFormulas = this.originalOutputFormulas;
-            console.log(InputFormulas);
-            console.log(this.outputFormulas)
-            console.log(this.originalOutputFormulas)
             this.outputs.forEach((out, ind) => {
-                const formula = ReplaceNumbersWithFormulas(this.outputFormulas[ind], InputFormulas);
-                console.log(formula);
+                const formula = ReplaceNumbersWithFormulas(""+this.originalOutputFormulas[ind], InputFormulas);
                 if (formula == '') {
                     return;
                 }
