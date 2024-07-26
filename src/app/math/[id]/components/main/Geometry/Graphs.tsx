@@ -14,7 +14,7 @@ const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 interface GraphProps {
     data: Graph,
     removeFunc: () => void,
-    isEditable? : boolean
+    isEditable?: boolean
 }
 
 const GraphComponent = React.memo((props: GraphProps) => {
@@ -37,7 +37,7 @@ const GraphComponent = React.memo((props: GraphProps) => {
     var step = range / props.data.resolution;
     const data: { x: number[], y: number[], name: string, marker: { color: string | rgb | undefined, width: number }, mode: string }[] = useMemo(() => {
         const d: { x: number[], y: number[], name: string, marker: { color: string | rgb | undefined, width: number }, mode: string }[] = [];
-        (props.data.functions as any).forEach((func : any) => {
+        (props.data.functions as any).forEach((func: any) => {
             var formula = func.expression;
             const x_data: number[] = [];
 
@@ -85,6 +85,7 @@ const GraphComponent = React.memo((props: GraphProps) => {
         set_dragging(false);
     }
     const Mmove = useCallback((event: MouseEvent) => {
+        if (!props.isEditable) return;
         SetMpos({ x: event.clientX, y: event.clientY });
         if (dragging) {
             const clone = [...Graphs];
@@ -94,6 +95,7 @@ const GraphComponent = React.memo((props: GraphProps) => {
         }
     }, [Graphs, dragging, mpos.x, mpos.y, prevMpos.x, prevMpos.y, props.data.id, setGraphs])
     useEffect(() => {
+        if (!props.isEditable) return;
         window.addEventListener("mousedown", Mdown);
         window.addEventListener("mouseup", Mup);
         window.addEventListener("mousemove", Mmove);
@@ -125,6 +127,7 @@ const GraphComponent = React.memo((props: GraphProps) => {
             WebkitBackdropFilter: "blur(6px)",
         }}
         onHoverEnd={() => {
+            if (!props.isEditable) return;
             setHoveringGraphs(prev => {
                 const clone = [...prev];
                 clone.splice(clone.findIndex(g => g == props.data.id));
@@ -132,6 +135,7 @@ const GraphComponent = React.memo((props: GraphProps) => {
             });
         }}
         onHoverStart={() => {
+            if (!props.isEditable) return;
             if (!hovering_graphs.includes(props.data.id)) {
                 setHoveringGraphs(prev => [...prev, props.data.id]);
             }
@@ -149,7 +153,7 @@ const GraphComponent = React.memo((props: GraphProps) => {
             layout={{
                 width: width,
                 height: height,
-                showlegend: true,                
+                showlegend: true,
 
                 xaxis: {
                     zeroline: true,
@@ -210,12 +214,12 @@ const GraphComponent = React.memo((props: GraphProps) => {
 
 GraphComponent.displayName = "graph-component";
 
-const GraphsComponent = React.memo((props : {isEditable? : boolean}) => {
+const GraphsComponent = React.memo((props: { isEditable?: boolean }) => {
 
     const [selected, set_selected] = useAtom(SELECTED_GRAPH);
     const [hovering_graphs, setHoveringGraphs] = useAtom(HOVERING_GRAPHS);
     const RightClick = useCallback((event: MouseEvent) => {
-        if (event.button != 2) return; 
+        if (event.button != 2) return;
         set_selected("");
     }, [set_selected]);
     useEffect(() => {

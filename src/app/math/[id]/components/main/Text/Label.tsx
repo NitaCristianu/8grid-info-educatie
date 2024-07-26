@@ -118,6 +118,7 @@ export default function Label(props: Label_Props) {
     }
 
     useEffect(() => {
+        if (!props.isEditable) return;
         set_x(label_self.left + offset.x);
         set_y(label_self.top + offset.y);
 
@@ -154,6 +155,7 @@ export default function Label(props: Label_Props) {
             width: 30 * 16
         }}
         onHoverEnd={() => {
+            if (!props.isEditable) return;
             setHoveringLabels((prev: any) => {
                 const clone = [...prev];
                 clone.splice(clone.findIndex(g => g == label_self.id));
@@ -161,12 +163,14 @@ export default function Label(props: Label_Props) {
             });
         }}
         onHoverStart={() => {
+            if (!props.isEditable) return;
             if (!hovering_labels.includes(label_self.id)) {
                 setHoveringLabels((prev: any) => [...prev, label_self.id]);
             }
         }}
         onDoubleClick={(event) => {
             if (document.activeElement == text_area.current) return;
+            if (!props.isEditable) return;
             if (
                 (mode == "menu" && event.clientX > size.x * 0.75) ||
                 (mode == "euclidian" && event.clientX > size.x * 0.69) ||

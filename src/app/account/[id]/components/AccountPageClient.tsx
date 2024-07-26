@@ -369,7 +369,7 @@ export default function AccountPageClient(props: {
                 }}
             >
                 {
-                    user && user.age >= 18 ?
+                    user && user.age >= 21 ?
                         <OptionButton
                             callback={() => {
                                 setLeftSide(true);
