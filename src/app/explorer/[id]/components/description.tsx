@@ -47,8 +47,10 @@ export default function Description(props: {
                             method: 'POST',
                             body: JSON.stringify({ postId: post_data.id, userId: user_data.id }),
                         })
-                            .catch((error) => console.log('error', error)).then(() => {
+                            .then(() => {
                                 setIsLiked(true)
+                            }).catch((error : string)=>{
+                                console.log(error);
                             });
                     }
                 }}
