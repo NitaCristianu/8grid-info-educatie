@@ -63,7 +63,7 @@ function Card(props: {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                padding: props.logging ? '9vh' : '7vh',
+                padding: props.logging ? '4.5vw' : '3.5vw',
                 background: 'none',
             }}
         >
