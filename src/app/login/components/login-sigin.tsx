@@ -163,7 +163,7 @@ function Card(props: {
                     fontWeight: 'light',
                     textAlign: 'center',
                     marginTop: '1vh',
-                    marginBottom: props.logging ? '5vh' : '1vh',
+                    marginBottom: props.logging ? '14vh' : '1vh',
                     color: "rgba(247, 114, 114, 0.53)",
                     textShadow: "0px 0px 10px rgba(255,100,100,0.5)",
                     opacity: props.password.length >= 8 || props.password == "" ? 0 : 1,
