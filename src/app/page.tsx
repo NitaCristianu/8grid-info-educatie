@@ -101,12 +101,12 @@ export default function Home() {
       color="rgba(3, 7, 45, 0.45)"
     />
     <Background2
-      x={0.23}
+      x={0.25}
       y={0}
       opacity={1}
     />
     <Background2
-      x={-0.3}
+      x={-0.28}
       opacity={.9}
       offset={95}
       y={0}
@@ -150,7 +150,7 @@ export default function Home() {
         y={-.4}
         size={1}
         zIndex={2}
-        color="rgba(18, 35, 191, 0.45)"
+        color="rgba(18, 35, 191, 0.55)"
       />
 
       <Links
