@@ -92,6 +92,7 @@ export default function Grid(props: { isEditable: boolean, data: Sim_data | null
                 Outputs.push(new Pin({ y: output.y, name: output.name, type: 'output', id: output.id }));
             })
             content.prefabs.forEach(prefab => {
+                console.log(prefab)
                 Prefabs.push({
                     color: prefab.color,
                     name: prefab.name,

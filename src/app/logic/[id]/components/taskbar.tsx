@@ -79,6 +79,7 @@ export default function Taskbar(props: {
                         name: cip.tag,
                         id : cip.id,
                     }));
+                    console.log(prefabs_data);
                     const connections_data = Connections.map(connection => ({
                         start: connection.start,
                         end: connection.end

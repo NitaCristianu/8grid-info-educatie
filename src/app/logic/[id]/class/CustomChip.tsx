@@ -27,6 +27,8 @@ export default class CustomChip extends Cip {
             if (badcase) return;
             const InputFormulas = InputConnections.map((connection) => (connection as Connection).startFormula);
             const OutputFormulas = this.originalOutputFormulas;
+            console.log(this.originalOutputFormulas);
+            console.log(this.tag)
             this.outputs.forEach((out, ind) => {
                 const formula = ReplaceNumbersWithFormulas(""+this.originalOutputFormulas[ind], InputFormulas);
                 if (formula == '') {

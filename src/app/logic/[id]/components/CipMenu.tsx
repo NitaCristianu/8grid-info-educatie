@@ -15,7 +15,6 @@ export default function CipMenu() {
     const [CipName, setCipDescription] = useState<string>("");
 
 
-
     useFrame(() => {
         setVisible(CreatingCustomChip.value != null);
     });
@@ -43,7 +42,7 @@ export default function CipMenu() {
                 className={styles.menubgr}
                 style={{
                     background: `radial-gradient(${CipColor}30,${"rgba(106, 95, 226, 0)"})`,
-                    marginTop : "-90vh"
+                    marginTop: "-90vh"
                 }}
             />
             <div
@@ -111,7 +110,7 @@ export default function CipMenu() {
                     onChange={e => {
                         setCipDescription(e.target.value);
                     }}
-                    
+
 
                 />
             </div>
@@ -158,6 +157,8 @@ export default function CipMenu() {
                         // Inputs.splice(0, Inputs.length);
                         // Outputs.splice(0, Outputs.length);
                         // Cips.splice(0, Cips.length);
+                        console.log(Inputs.length);
+                        console.log(Outputs.map(out => out.formula));
                         Prefabs.push({
                             color: CipColor,
                             name: CipDescription,

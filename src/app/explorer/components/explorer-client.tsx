@@ -202,12 +202,11 @@ export default function ExplorerClient(props: {}) {
                     href={`/explorer/${post.id}`}
                     key={post.id}
                     whileHover={{
-
                         border: "3.5px solid rgba(224, 224, 224, 0.69)",
                     }}
                     style={{
-                        width: '20vw',
-                        height: '20vh',
+                        width: '22vw',
+                        height: '22vh',
                         border: "1.5px solid rgba(224, 224, 224, 0.29)",
                         borderRadius: '2rem',
                         background: "rgba(0, 0, 0, 0.16)",
