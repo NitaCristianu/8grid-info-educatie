@@ -74,7 +74,7 @@ export default function Home(props: { params: { id: string } }) {
         <Grid />
         <Euclidian />
         {isEditable ? <Anchors /> : null}
-        <Text isEditable />
+        <Text isEditable={isEditable} />
         <Graphs isEditable={isEditable} />
         <ExitButton />
         {isEditable ? <Taskbar id={id} /> : null}

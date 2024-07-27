@@ -56,6 +56,7 @@ function getSlider(inputString: string): slider_props {
 }
 
 export default function Label(props: Label_Props) {
+    
     const { id } = props;
     const [data, set_data] = useAtom(labels_data);
     const [mode, set_mode] = useAtom(MODE);
@@ -118,9 +119,9 @@ export default function Label(props: Label_Props) {
     }
 
     useEffect(() => {
-        if (!props.isEditable) return;
         set_x(label_self.left + offset.x);
         set_y(label_self.top + offset.y);
+        if (!props.isEditable) return;
 
         window.addEventListener("mousedown", mDown);
         window.addEventListener("mouseup", mUp);
