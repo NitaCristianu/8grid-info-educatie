@@ -101,12 +101,12 @@ export default function Home() {
       color="rgba(3, 7, 45, 0.45)"
     />
     <Background2
-      x={0.33}
+      x={0.36}
       y={0}
       opacity={1}
     />
     <Background2
-      x={-0.20}
+      x={-0.17}
       opacity={.9}
       offset={95}
       y={0}
