@@ -10,6 +10,11 @@ import { clamp } from "three/src/math/MathUtils.js";
 import { v4 } from "uuid";
 import ReactTextareaAutosize from 'react-textarea-autosize';
 
+/*
+THE ACTION TAB USED FOR MODYFING ELEMENTS
+ AND CHACHING PROPRETIES
+*/
+
 function getObject(id: string | null | undefined, points: ePoint[], points_calc: ePoints_Calc[], segments: eSegment[]) {
     if (typeof (id) != "string") return -1;
     const i1 = points.findIndex(p => p.id == id);

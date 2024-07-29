@@ -8,6 +8,12 @@ import useSize from '../hooks/useSize';
 import useMouse from '../hooks/useMouse';
 import { Cips, Connections, Inputs, Outputs, Prefabs } from '../data/elements';
 
+/*
+TASKBAR RESPONSIBLE FOR SAVING, CREAING CIPS, PLACING CIPS
+BASED ON CELL COMPONENTS WHICH SERVER AS BUTTONS
+see more below
+*/
+
 export function Cell(props: { name: string, color: string, callBack: () => void }) {
     const color = props.color[0] == 'r' ? (convertRgbToRgba(props.color, 0.2)) : props.color + "33";
     const color2 = props.color[0] == 'r' ? (convertRgbToRgba(props.color, 0.4)) : props.color + "66";
@@ -17,7 +23,7 @@ export function Cell(props: { name: string, color: string, callBack: () => void 
             backgroundColor: color,
             borderColor: props.color,
             boxShadow: `0px 0px 10px ${color}`,
-            textWrap : 'nowrap',
+            textWrap: 'nowrap',
         }}
         onClick={props.callBack}
         whileTap={{ scale: 1.05 }}
@@ -28,7 +34,7 @@ export function Cell(props: { name: string, color: string, callBack: () => void 
 export default function Taskbar(props: {
     saveproject: (a: any) => void
 }) {
-    
+
     const divRef = useRef<HTMLDivElement>(null);
     const size = useSize();
     const [posY, setY] = useState<boolean>(true);
@@ -59,25 +65,25 @@ export default function Taskbar(props: {
                     const input_data = Inputs.map(input => ({
                         y: input.y,
                         name: input.name,
-                        id : input.id
+                        id: input.id
                     }));
                     const output_data = Outputs.map(output => ({
                         y: output.y,
-                        id : output.id,
+                        id: output.id,
                         name: output.name
                     }));
                     const prefabs_data = Prefabs.map(prefab => ({
                         inputsNum: prefab.inputsNum,
                         name: prefab.name,
                         outputFormulas: prefab.outputFormulas,
-                        desc : prefab.desc,
+                        desc: prefab.desc,
                         color: prefab.color,
                     }))
                     const cips_data = Cips.map(cip => ({
                         x: cip.x,
                         y: cip.y,
                         name: cip.tag,
-                        id : cip.id,
+                        id: cip.id,
                     }));
                     console.log(prefabs_data);
                     const connections_data = Connections.map(connection => ({

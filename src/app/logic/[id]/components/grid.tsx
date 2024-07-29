@@ -2,6 +2,14 @@
 // the grid includes inputs, outputs, and, not, custom chips
 // the respectives classes are found in the class folder
 
+/*
+THE GRID RESPOSIBLE FOR CONTAING ELEMENTS
+CHECK FOR EDITABILITY AND PERMISSIONS
+BASED ON CONSTRUCTION VARS IT CAN READ INPUTS AND HANDLE PLACEMENT
+See more below
+
+*/
+
 import { useEffect, useRef } from "react";
 import useMouse, { MouseObject } from "../hooks/useMouse";
 import useSize from "../hooks/useSize"

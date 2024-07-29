@@ -1,3 +1,12 @@
+/*
+
+THE PIN BOTH INPUT AND OUTPUT TYPES
+can used a custom tag
+has props (see below)
+has key methods for reading / uploading (see below)
+
+*/
+
 import { voltage } from "../interfaces/keywords";
 import { v4 } from 'uuid';
 import { inCircle, inRect, randomChange255 } from "../utils/math";
@@ -5,9 +14,7 @@ import { MouseObject } from "../hooks/useMouse";
 import { Inputs, Outputs } from "../data/elements";
 import { ConstructionVar1, SelectedElements } from "../data/vars";
 import { ComputeFormula } from "../utils/formulas";
-import { convertRgbToRgba, increaseContrast } from "../utils/colors";
 import { SELECT_COLOR } from "../data/consts";
-import { cubicBezier } from "framer-motion/dom";
 
 export const INDICATOR_RAD = 20;
 export const SCREEN_BOUND = 0.07;

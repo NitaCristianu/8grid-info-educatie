@@ -8,6 +8,11 @@ import useResize from "@/app/math/[id]/hooks/useResize";
 import { useAtom } from "jotai";
 import { useEffect, useRef, useState } from "react";
 
+/*
+THE COMPONENT RESPONSIBLE FOR DRAWING GEOMETRY
+HANDLES SELECTIONS (see belos)
+*/
+
 function DrawPointCalc(ctx: CanvasRenderingContext2D, point: ePoints_Calc, points: ePoint[], points_calc: ePoints_Calc[], variables: variable[], offset: vec2D) {
     if (point.visible != null && point.visible == false) return;
     const { x, y } = toLocal(ObtainPosition(point.formula, points, points_calc, variables), offset);

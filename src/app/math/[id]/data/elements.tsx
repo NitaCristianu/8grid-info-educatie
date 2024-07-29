@@ -1,7 +1,9 @@
 import { atom } from "jotai";
 import { Graph, Label, ePoint, ePoints_Calc, eSegment, segment_render_mode, theme } from './props';
-import { v4 } from "uuid";
-import { expression } from "three/examples/jsm/nodes/Nodes.js";
+
+// DATA AND CONSTS NECESARY FOR COMPONENTS
+// SEE GEOMETRY ELEMNTS DAT BELOW
+
 
 export const ePoints_data = atom<ePoint[]>([]);
 

@@ -4,6 +4,8 @@ import { useAtom } from "jotai";
 import { SECONDARY } from "@/app/math/[id]/data/globals";
 import { transparent } from "@/app/math/[id]/data/management";
 
+// basic katex renderer based on a formula
+
 export default function KaTeX({ tex, className = "" }: { tex: string, className?: string, onClick? : (event:MouseEventHandler<HTMLDivElement>)=>void }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [sec] = useAtom(SECONDARY);

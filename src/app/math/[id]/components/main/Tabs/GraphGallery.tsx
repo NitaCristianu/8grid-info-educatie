@@ -9,6 +9,13 @@ import ReactTextareaAutosize from 'react-textarea-autosize';
 import { RGB2string, rgbToHex, transparent } from "@/app/math/[id]/data/management";
 import { GRAPHS } from "@/app/math/[id]/data/elements";
 
+/*
+GRAPH GALLERY USED FOR UPLOADING FUNCTION DATA IN REAL TIME
+IT ALSO USES RANGE X Y
+AND READS INPUT FOR FUNCTIONS QUALITY 
+see more below
+*/
+
 export default function GraphGallery() {
     const [current_mode, set_mode] = useAtom(MODE);
     const [Graphs, setGraphs] = useAtom(GRAPHS);

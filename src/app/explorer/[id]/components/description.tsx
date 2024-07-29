@@ -8,11 +8,17 @@ export default function Description(props: {
     post_data: originalData | null,
     user_data: user_type | null,
 }) {
+    // the post description
+    // includes likes, title, description, settings (only if user is owner)
+
+    // import data
     const post_data = props.post_data;
     const user_data = props.user_data;
 
+    // heart color
     var heart_color = "white";
 
+    // obtain necesarry data
     const likesData = Array.from(new Set(post_data?.likes));
     const [isLiked, setIsLiked] = useState(likesData.find(id => id == user_data?.id) ? true : false);
     const wasliked = usePrevious(isLiked);
@@ -40,6 +46,7 @@ export default function Description(props: {
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0 }}
                 onClick={() => {
                     if (!isLiked && post_data != null && user_data != null) {
+                        // send like if valid data
                         fetch('/api/like', {
                             headers: {
                                 'Content-Type': 'application/json',
@@ -48,6 +55,7 @@ export default function Description(props: {
                             body: JSON.stringify({ postId: post_data.id, userId: user_data.id }),
                         })
                             .then(() => {
+                                // set is liked clinet
                                 setIsLiked(true)
                             }).catch((error : string)=>{
                                 console.log(error);

@@ -8,6 +8,10 @@ import GradientCircle from "../components/GradientCircle";
 import { useEffect, useState } from "react";
 import Background3 from "./components/Background3";
 
+/*
+THE CONTAINER FOR LOGGING
+*/
+
 export default function Page() {
     const [isClient, setIsClient] = useState(false);
 

@@ -7,12 +7,14 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 export default function Comments(props: {
     post_id: string
 }) {
-
+    // the comment sections comment
+    // necessary comment data
     const [comment, setCommentPost] = useState("");
     const [userId, setUserId] = useState(typeof (window) != "undefined" ? localStorage.getItem("userId") : null);
     const [users, setUsers] = useState<user_type[] | null>(null);
     const [comments, setComments] = useState<any[]>([]);
 
+    // get user and post data
     useEffect(() => {
         fetch('/api/user', {
             headers: {
@@ -87,6 +89,7 @@ export default function Comments(props: {
                 }}
                 whileHover={{ scale: 1.05 }}
                 onClick={() => {
+                    // try comments if all data is valid
                     if (userId && userId.length > 0 && comment.length > 0 && props.post_id && props.post_id.length > 0) {
                         fetch('/api/comment', {
                             headers: {
@@ -140,6 +143,7 @@ export default function Comments(props: {
                 if (!commentData.user || !commentData.comment || !users) return null;
                 const user = (users || []).find(user => user.id == commentData.user);
                 if (!user) return null;
+                // map the components into cards if possible
                 return <div
                     key={comment + i.toFixed(0)}
                     style={{

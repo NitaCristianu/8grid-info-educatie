@@ -5,6 +5,10 @@ import { Cips, Inputs, Outputs, Prefabs } from "../data/elements";
 import { constructs, Position } from "../data/vars";
 import { MouseObject } from "../hooks/useMouse";
 
+/*
+USED FOR HIGLIGHING AND PLACING CIPS BOTH CUSTOM AND PREMADE
+*/
+
 export default function Placement(val: constructs | null, ctx: CanvasRenderingContext2D, mouse: MouseObject, prevMouse: MouseObject) {
     const position = Position.value || { x: 0, y: 0 };
     const mpos = { x: mouse.position.x - position.x, y : mouse.position.y - position.y };

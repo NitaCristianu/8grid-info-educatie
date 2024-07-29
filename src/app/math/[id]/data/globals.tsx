@@ -2,6 +2,8 @@ import { atom } from "jotai";
 import { anchor, Graph, variable } from "./props";
 import { v4 } from "uuid";
 
+// GLOBAL CONSTS
+
 export type mode = "menu" | "selection" | "euclidian" | "graph";
 export type blocks = null | "calc" | "ePoint" | "eSegment" | "eCenter" | "ePerpendicular" | "label" | "graph" | "anchor";
 export type elements = blocks | "label"

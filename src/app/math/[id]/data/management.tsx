@@ -2,6 +2,8 @@ import { ePoint, ePoints_Calc, eSegment, Fragment, func, Tag, variable } from '.
 import { CELL_SIZE, GRID_POSITION, POINT_RADIUS, SEGMENT_WIDTH, vec2D } from './globals';
 import { v4 } from "uuid";
 
+// UTILIY FUNCTIONS FOR MANANING COLORS, POINTS ,FORMULAS, SEGMENTS and more (See below)
+
 export interface rgb { r: number, g: number, b: number };
 
 export function isEPointsCalc(p: ePoint | ePoints_Calc): p is ePoints_Calc {

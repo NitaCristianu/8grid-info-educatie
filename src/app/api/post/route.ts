@@ -2,12 +2,14 @@ import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prisma";
 
 export async function GET(req: Request) {
+    // obtaining post data
     const posts = await prisma.post.findMany();
     const data = JSON.stringify(posts);
     return new Response(data);
 }
 
 export async function POST(req: Request) {
+    // creating, updating, deleting post
     const data: {
         title: string,
         type: string,
@@ -22,12 +24,14 @@ export async function POST(req: Request) {
     } = await req.json();
 
     if (data.delete == true) {
+        // deleted
         await prisma.post.delete({
             where: { id: data.id }
         })
         return NextResponse.json({ message: "uploaded data success" });
     }
     if (data.update) {
+        // update post
         const post_data = await prisma.post.findFirst({ where: { id: data.id } });
         if (post_data)
             await prisma.post.update({
@@ -42,6 +46,7 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: "uploaded data success" });
     }
 
+    // create post
     await prisma.post.create({
         data: {
             title: data.title,

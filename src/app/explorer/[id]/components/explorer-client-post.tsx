@@ -22,11 +22,13 @@ export interface originalData {
 export default function ExplorerClient(props: {
     postId: string
 }) {
+    // the main explorer client container
     // obtain post data
     const [post_data, setPostData] = useState<originalData | null>(null);
     const [user_data, setUserData] = useState<user_type | null>(null);
     const [action, setAction] = useState(false);
 
+    // obtaing post data
     useEffect(() => {
         fetch('/api/post', {
             headers: {
@@ -37,9 +39,11 @@ export default function ExplorerClient(props: {
             .then((response) => response.json())
             .then((d) => {
                 const post = (d as originalData[]).find(post => post.id == props.postId);
+                // set post data
                 setPostData(post || null);
             })
             .catch((error) => console.log('error', error));
+            // obtain user data
         fetch('/api/user', {
             headers: {
                 'Content-Type': 'application/json',
@@ -49,12 +53,14 @@ export default function ExplorerClient(props: {
             .then((response) => response.json())
             .then((d) => {
                 const userId = typeof (window) != "undefined" ? localStorage.getItem("userId") : null;
+                // set user data
                 setUserData((d as user_type[]).find(user => user.id == userId) || null);
             })
             .catch((error) => console.log('error', error));
 
     }, [action, props.postId])
 
+    // containing elements + Css
     return <div
         style={{
             padding: "2rem",

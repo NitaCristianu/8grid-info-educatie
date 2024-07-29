@@ -1,3 +1,8 @@
+/*
+
+ THE CIP MOTHER CLASS INCLUDING FUCNTIONALITY
+ SEE MORE INFO BELOW
+*/
 import { v4 } from "uuid";
 import { MouseObject } from "../hooks/useMouse";
 import { inCircle, inRect } from "../utils/math";
@@ -7,6 +12,7 @@ import { ConstructionVar1, Position, SelectedElements } from "../data/vars";
 import { Connections, Prefabs } from "../data/elements";
 import { SELECT_COLOR } from "../data/consts";
 
+// styling consts
 export const PIN_SPACING_Y = 32;
 export const ROUNDNESS = 8;
 export const OFFSETY = 16;
@@ -16,6 +22,7 @@ export const HOLD_SHADOW_OFFSET = 5;
 export const HIGH_COLOR = 'rgba(80,255,80,0.7)';
 export const LOW_COLOR = 'rgba(30,30,30,0.2)';
 
+// the cip props (have default values)
 export interface CipProperties {
     color?: string,
     tag?: string,
@@ -29,6 +36,7 @@ export interface CipProperties {
 
 export default class Cip {
 
+    // declaration of values
     public declare color;
     public declare tag;
     public declare id;
@@ -50,6 +58,7 @@ export default class Cip {
     public declare outputFormulas: string[];
 
     constructor(props?: CipProperties) {
+        // aplying props
         this.color = props?.color || "#ffffff";
         this.tag = props?.tag || "Cip";
         this.id = props?.id || v4();
@@ -61,10 +70,12 @@ export default class Cip {
         this.holding = false;
         this.selected = false;
 
+        // calculation height and top left (tlx, tly)
         this.height = Math.max(this.outputsNum, this.inputsNum) * PIN_SPACING_Y + OFFSETY;
         this.tlx = this.x - this.width / 2;
         this.tly = this.y - this.height / 2;
 
+        // intialize arrays for formulas and inputs/outputs
         this.outputFormulas = []
         this.inputs = [];
         this.outputs = [];
@@ -82,19 +93,28 @@ export default class Cip {
     }
 
     update(mouse: MouseObject, prevMouse: MouseObject) {
+        // called often
+        // is moust inside cip
         const inrect = inRect(mouse.position.x, mouse.position.y, this.tlx, this.tly, this.width, this.height);
+        // holding conditions
         if (inrect && mouse.buttons.left && !prevMouse.buttons.left) {
             this.holding = true;
         }
+        // selected conditions
         if (!inrect && mouse.buttons.right && !prevMouse.buttons.right) {
+            // set as selected
             SelectedElements.set((SelectedElements.value || []).filter(item => item != this.id));
             this.selected = false;
         }
+        // set double click (add to selected elements)
         if (inrect && mouse.buttons.doubleClick) {
             this.selected = true;
             SelectedElements.set([...SelectedElements.value || [], this.id]);
         }
+        // disable holding
         if (mouse.buttons.left == false) this.holding = false;
+
+        // reposition based on mouse delta
         if (this.holding) {
             this.x += (mouse.position.x - prevMouse.position.x);
             this.y += (mouse.position.y - prevMouse.position.y);
@@ -104,14 +124,17 @@ export default class Cip {
         const subpin_boundingbox = inRect(mouse.position.x, mouse.position.y, this.tlx - SUBPIN_RADIUS, this.tly, this.width + 2 * SUBPIN_RADIUS, this.height);
         if (subpin_boundingbox && mouse.buttons.right && !prevMouse.buttons.right) {
             var pinLocation: { index: number, type: 'input' | 'output' } | null = null;
+            // inputs check
             for (let i = 0; i < this.inputsNum; i++) {
                 const pos = this.getPinPosition(i, 'input');
                 if (inCircle(mouse.position.x, mouse.position.y, pos.x, pos.y, SUBPIN_RADIUS)) pinLocation = { index: i, type: 'input' };
             }
+            // outputs check
             for (let i = 0; i < this.outputsNum; i++) {
                 const pos = this.getPinPosition(i, 'output');
                 if (inCircle(mouse.position.x, mouse.position.y, pos.x, pos.y, SUBPIN_RADIUS)) pinLocation = { index: i, type: 'output' };
             }
+            // if found
             if (pinLocation) {
                 ConstructionVar1.set({
                     type: 'gatetype',
@@ -161,8 +184,12 @@ export default class Cip {
     }
 
     draw(ctx: CanvasRenderingContext2D, mouse: MouseObject) {
+        // called often
 
         const position = Position.value || { x: 0, y: 0 };
+        // postition offset
+        
+        // hold style
         if (this.holding || this.selected) {
             ctx.beginPath();
             ctx.shadowBlur = 20;
@@ -174,6 +201,7 @@ export default class Cip {
 
         }
 
+        // default style
         if (!this.holding && !this.selected) {
             ctx.shadowBlur = 10;
             ctx.shadowColor = 'rgba(0,0,0, 0.8)'
@@ -183,11 +211,13 @@ export default class Cip {
             ctx.fill();
             ctx.shadowBlur = 0;
         }
+        // cip style
         ctx.beginPath();
         ctx.fillStyle = this.color;
         ctx.roundRect(this.tlx, this.tly, this.width, this.height, ROUNDNESS);
         ctx.fill();
 
+        // text style
         ctx.beginPath();
         ctx.font = `bold ${FONT_SIZE}px Poppins`;
         ctx.fillStyle = "rgba(0,0,0,0.2)";
@@ -197,6 +227,7 @@ export default class Cip {
         ctx.fillText(this.tag.toUpperCase(), centerx, centery);
 
 
+        // draw inputs based on value
         for (let i = -this.inputsNum / 2; i < this.inputsNum / 2; i++) {
             const pos = this.getPinPosition(i + this.inputsNum / 2, 'input');
             ctx.beginPath();
@@ -214,6 +245,7 @@ export default class Cip {
             ctx.fill();
             ctx.shadowBlur = 0;
         }
+        // draw outputs based on value
         for (let j = -this.outputsNum / 2; j < this.outputsNum / 2; j++) {
             const pos = this.getPinPosition(j + this.outputsNum / 2, 'output');
             ctx.beginPath();
@@ -231,6 +263,7 @@ export default class Cip {
             ctx.fill();
             ctx.shadowBlur = 0;
         }
+        // the description render
         if (this.holding) {
             var t = '';
             if (this.tag == 'and') {

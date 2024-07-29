@@ -3,12 +3,14 @@ import { NextApiRequest, NextApiResponse } from "next";
 import prisma from "@/app/libs/prisma";
 
 export async function GET(req: Request) {
+    // get users data
     const users: { id: string, password: string }[] = await prisma.user.findMany();
     const data = JSON.stringify(users);
     return new Response(data);
 }
 
 export async function POST(req: Request) {
+    // upload update or delete user based on the values from below
     const data: { id: string, age: number, password: string, email: string, color?: string, update?: boolean, delete?: boolean } = await req.json();
 
     if (data.delete) {

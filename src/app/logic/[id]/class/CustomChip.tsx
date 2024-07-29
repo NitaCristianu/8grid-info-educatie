@@ -3,6 +3,15 @@ import { ApplyAnd, ComputeFormula, ReplaceNumbersWithFormulas } from "../utils/f
 import Cip, { CipProperties } from "./Cip";
 import Connection from "./Connection";
 
+/*
+
+CUSTOM CHIP
+used for uploading formulas to existing input formulas
+can be composed of nested formulas
+
+
+*/
+
 export interface CustomChipProps extends CipProperties {
     outputFormulas: string[];
 }

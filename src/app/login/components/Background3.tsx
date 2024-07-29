@@ -3,6 +3,8 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import useSize from '@/app/logic/[id]/hooks/useSize';
 
+// see the info in background 1
+
 const BACKGROUND_SHADER = `
     uniform float time;
     uniform vec2 size;

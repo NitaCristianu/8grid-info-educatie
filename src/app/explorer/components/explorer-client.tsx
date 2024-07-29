@@ -3,24 +3,32 @@ import { motion } from 'framer-motion';
 import { useEffect, useState } from 'react';
 import { originalData } from '../[id]/components/explorer-client-post';
 import GradientCircle from '@/app/components/GradientCircle';
-import { element } from 'three/examples/jsm/nodes/Nodes.js';
-import { useRouter } from 'next/router';
 
-type types = 'Math' | 'Logic';
-const MATH_COLOR = ""
 export default function ExplorerClient(props: {}) {
+    // the main explorer component
+
+    // get chromatic necessary data + other uses below  
     const [currentTab, setTab] = useState("Math");
     const color = currentTab == "Math" ? "rgb(35, 137, 209)" : "rgb(248, 117, 29)";
 
-    const [isOpenSearch, setIsOpenSearch] = useState(false);
+    // the search input state
     const [searchInput, setSearchInput] = useState("");
+    // the post state
     const [posts, setPosts] = useState<originalData[]>([]);
+
+    // the lessons
+    // filtered on user
+    // filtered on title
+    // based on lower case
+    // sorted by original likes
+
 
     const lessons = posts
         .filter(post => searchInput[0] != "@" ? post.type == currentTab && post.title.toLowerCase().includes(searchInput.toLocaleLowerCase()) && post.Public : post.type == currentTab && post.userId?.toLowerCase().includes(searchInput.slice(1, searchInput.length).toLocaleLowerCase()) && post.Public)
         .sort((a, b) => (Array.from(new Set(b.likes)).length - Array.from(new Set(a.likes)).length));
 
 
+    // get post data client wise
     useEffect(() => {
         fetch('/api/post', {
             headers: {
@@ -106,6 +114,7 @@ export default function ExplorerClient(props: {}) {
                     fontSize: '3vh',
                     alignItems: 'center',
                     flexDirection: 'column',
+                    textWrap: 'nowrap',
                 }}
             >
                 <motion.button
@@ -113,9 +122,9 @@ export default function ExplorerClient(props: {}) {
                         fontWeight: 600,
                         userSelect: 'none'
                     }}
-                    onClick={() => setTab(element)}
+                    onClick={() => setTab(element) /**set current tab  */}
 
-                >{element}</motion.button>
+                >{element == "Math" && element || "D. Logic"}</motion.button>
                 <motion.div
                     animate={{
                         background: currentTab == element ? color : 'white',
@@ -247,6 +256,7 @@ export default function ExplorerClient(props: {}) {
                                 fontWeight: 600,
                                 userSelect: 'none',
                             }}
+                        // Original likes length
                         >{Array.from(new Set(post.likes)).length || 0}</h1>
                         <svg
                             viewBox="0 0 24 24"

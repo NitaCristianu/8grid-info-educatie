@@ -3,6 +3,7 @@ import { Canvas, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import useSize from '@/app/logic/[id]/hooks/useSize';
 
+// background shader and inspiration links
 const BACKGROUND_SHADER = `
     uniform float time;
     uniform vec2 size;
@@ -185,6 +186,7 @@ void main(){
 `;
 
 function BackgroundShader(props: any) {
+    // the shader component, obtaining the props
     var { size, offset, color } = props;
     color = color || { r: 0, g: 0, b: 0 };
 
@@ -224,6 +226,7 @@ export default function Background4(props: {
     color: { r: number, g: number, b: number },
 
 }) {
+    // styling
     const size = useSize();
     return (
         <div

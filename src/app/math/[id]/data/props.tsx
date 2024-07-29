@@ -1,6 +1,10 @@
 import { v4 } from "uuid";
 import { rgb } from "./management";
 
+// TYPESCRIPT INTERFACES
+// imporves readibilty
+// see each below
+
 export type segment_render_mode = "only-segment" | "only-line" | "line-segment" | "circle";
 
 export interface theme {

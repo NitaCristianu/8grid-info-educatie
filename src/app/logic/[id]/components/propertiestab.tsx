@@ -8,6 +8,12 @@ import { ChangingProps, SelectedElements } from '../data/vars';
 import useMouse from '../hooks/useMouse';
 import { Cips, Connections, Inputs, Outputs } from '../data/elements';
 
+/*
+    RESPONSIBLE FOR REMOVING ELEMENTS
+    THAT ARE SELECTED
+    see below
+*/
+
 function removeElementById(array: { id: string }[], id: string) {
     const index = array.findIndex(element => element.id == id);
     var i = 0;

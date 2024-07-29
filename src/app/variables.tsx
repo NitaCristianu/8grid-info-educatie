@@ -1,5 +1,7 @@
 import { atom } from "jotai";
 
+// common variables for typescript and data handling
+
 export interface user_type {
     id: string,
     password: string,

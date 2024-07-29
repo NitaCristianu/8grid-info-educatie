@@ -4,6 +4,10 @@ import Pin, { INDICATOR_RAD, PIN_RADIUS, SCREEN_BOUND } from "../class/Pin";
 import { Inputs, Outputs } from "../data/elements";
 import { MouseObject } from "../hooks/useMouse";
 
+/*
+    HANDLES PIN PLACEMENT IN BOTH LEFT AND RIGHT EXTREMES
+*/
+
 export default function PlacingPins(ctx: CanvasRenderingContext2D, size: { x: number, y: number }, mouse: MouseObject, prevMouse: MouseObject) {
     const w = Math.abs(size.x * SCREEN_BOUND - size.x * SCREEN_BOUND / 2) + 2 * PIN_RADIUS + HOLD_SHADOW_OFFSET * 2;
     const h = 2 * INDICATOR_RAD + HOLD_SHADOW_OFFSET;

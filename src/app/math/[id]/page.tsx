@@ -24,6 +24,8 @@ export interface WorldData {
     labels: any[]
 };
 
+// THE CONTAINER FOR MATH LESSONS
+
 export default function Home(props: { params: { id: string } }) {
 
     const id = props.params.id.slice(1, props.params.id.length);

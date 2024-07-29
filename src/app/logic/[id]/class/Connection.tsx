@@ -4,6 +4,7 @@ import { voltage } from "../interfaces/keywords";
 import { MouseObject } from "../hooks/useMouse";
 import { SelectedElements } from "../data/vars";
 
+// PIN LOCATION INTERFACES
 export interface gateLocation {
     id: string, index?: number
 }
@@ -23,11 +24,13 @@ export interface ConnectionProps {
     id?: string
 };
 
+// CONSTS
 const LINE_WIDTH = 5;
 const HIGH_COLOR = 'rgba(80,255,80)';
 const LOW_COLOR = 'grey';
 
 export default class Connection {
+    // props
     public declare start: ConnectionStart;
     public declare end: ConnectionEnd;
 
@@ -41,6 +44,7 @@ export default class Connection {
     public declare selected: boolean;
 
     constructor(props: ConnectionProps) {
+        // set props
         this.start = props.start;
         this.end = props.end;
 
@@ -55,10 +59,12 @@ export default class Connection {
     }
 
     update(mouse: MouseObject, prevMouse: MouseObject) {
+        // called often
         var startVal = false;
         this.voltage = 'low';
 
         if (mouse.buttons.doubleClick) {
+            // if double click select, calcualte if line is clicked using math
             const a = { x: this.startx, y: this.starty };
             const b = { x: this.endx, y: this.endy };
             const p = { ...mouse.position }
@@ -76,6 +82,7 @@ export default class Connection {
                 this.selected = true;
             }
         }
+        // deselect line
         if (this.selected && mouse.buttons.right && prevMouse.buttons.right) {
             var index = (SelectedElements.value || []).findIndex(s => s == this.id);
 
@@ -86,6 +93,7 @@ export default class Connection {
             this.selected = false;
         }
 
+        // try reading start value and formula
         if (this.start.type == 'gatepin') {
             const startcip_index = Cips.findIndex(cip => cip.id == this.start.location.id);
             if (startcip_index > -1) {
@@ -107,6 +115,7 @@ export default class Connection {
             }
         }
         this.voltage = startVal ? 'high' : 'low';
+        // pass voltage to end pin
         if (this.end.type == 'gatepin') {
             const endcip_index = Cips.findIndex(cip => cip.id == this.end.location.id);
             if (endcip_index > -1) {
@@ -128,6 +137,9 @@ export default class Connection {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
+        // update every frame
+
+        // draws a line based on connections postion (startxy, endxy)
         ctx.beginPath();
         if (this.voltage == 'high') {
             ctx.shadowBlur = 10;

@@ -2,6 +2,8 @@ import prisma from "@/app/libs/prisma";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+    // post fo liking
+    // read messages for info
     try {
         const { userId, postId } = await req.json();
         if (!userId || !postId) {

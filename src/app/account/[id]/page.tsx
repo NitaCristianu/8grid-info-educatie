@@ -7,7 +7,8 @@ import { useEffect, useState } from "react";
 export default function Home(props: { params: { id: string } }) {
   const userId = props.params.id;
   const [isClient, setIsClient] = useState(false);
-
+  // the container of necessary account elements
+  
   useEffect(() => {
     setIsClient(true);
   }, []);
@@ -15,7 +16,7 @@ export default function Home(props: { params: { id: string } }) {
   if (!isClient) {
     return null;
   }
-
+  // only render client wise
 
   return (
     <>

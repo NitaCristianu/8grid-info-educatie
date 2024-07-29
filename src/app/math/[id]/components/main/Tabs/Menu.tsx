@@ -9,6 +9,8 @@ import { ePoints_Calc_data, ePoints_data, eSegments_data, GRAPHS, labels_data } 
 import ReactTextareaAutosize from 'react-textarea-autosize';
 import { ChangeEvent } from "react";
 
+// unused in this version
+
 export default function Menu() {
     const [current_mode, set_mode] = useAtom(MODE);
     const [accent, set_accent] = useAtom(ACCENT);

@@ -6,6 +6,10 @@ import { BACKGROUND, GRID_POSITION } from '@/app/math/[id]/data/globals';
 import useResize from '@/app/math/[id]/hooks/useResize';
 import { parseRGB } from '../../../data/management';
 
+/*
+see in bgr shader 4 info
+*/
+
 const BACKGROUND_SHADER = `
     uniform vec2 offset;
     uniform vec2 size;

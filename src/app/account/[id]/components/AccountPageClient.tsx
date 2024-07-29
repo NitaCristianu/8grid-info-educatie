@@ -2,7 +2,6 @@
 
 import GradientCircle from "@/app/components/GradientCircle";
 import { currentUser_atom, post_type, user_type, users_atom } from "@/app/variables";
-import { useAtom } from "jotai";
 import { redirect } from "next/navigation";
 import { CSSProperties, useEffect, useMemo, useState } from "react";
 import { color, motion } from 'framer-motion';
@@ -15,6 +14,10 @@ const POSTS_PER_PAGE = 5;
 const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function OptionButton(props: { callback: () => void, href?: string, content: string, color?: string, style?: CSSProperties }) {
+    /// Button matching the minimalistic style
+    // callback is called on click
+    // href is not necessary
+    // more style 
     if (!props.href)
         return <motion.button
             onCanPlay={props.callback}
@@ -25,7 +28,7 @@ function OptionButton(props: { callback: () => void, href?: string, content: str
                 padding: '1vh',
                 borderRadius: '1rem',
                 border: "1.5px solid rgba(213, 213, 213, 0.34)",
-                width: "30vh",
+                width: "20vw",
                 color: props.color || 'white',
                 textAlign: 'center',
                 ...props.style
@@ -68,9 +71,11 @@ function PostPad(props: {
     deleted: boolean,
     setDeletedPosts: any
 }) {
+    // the card that is used for uploaded posts
     return <motion.div
         onClick={() => {
             if (!props.deleteMode) return;
+            // add new deleted post
             props.setDeletedPosts((prev: string[]) => {
                 const index = prev.findIndex(id => id == props.id);
                 if (index > -1) {
@@ -95,7 +100,7 @@ function PostPad(props: {
             padding: '3rem',
             width: '100%',
             color: props.deleted ? "rgb(233, 141, 141)" : "rgb(224, 224, 224)",
-            height: `0.4vh`,
+            height: `0.1vh`,
             fontFamily: "Poppins"
         }}
     >
@@ -163,7 +168,9 @@ function PostPad(props: {
     </motion.div>
 }
 
+
 function hexToRgb(hex: string): { r: number, g: number, b: number } | null {
+    // converts hex colors to rgb numbers (used for rendering 3d shape)
     if (!/^#?([a-fA-F0-9]{6}|[a-fA-F0-9]{3})$/.test(hex)) {
         return { r: 0, g: 0, b: 0 };
     }
@@ -184,6 +191,7 @@ function hexToRgb(hex: string): { r: number, g: number, b: number } | null {
 export default function AccountPageClient(props: {
     UserId: string,
 }) {
+    // the main account page
     const userId = props.UserId;
     const [isClient, setIsClient] = useState(false);
 
@@ -196,7 +204,9 @@ export default function AccountPageClient(props: {
     const [posts, setPosts] = useState<originalData[]>([]);
     const [deleteMode, setDeleteMode] = useState(false);
     const [deletedPosts, setDeletedPosts] = useState<string[]>([]);
-    const [action, setAction] = useState(false);
+    // necessary user variables
+    // modes that indicate the user action
+    // the array of currently selected posts to be deleted
 
     useEffect(() => {
         fetch('/api/user', {
@@ -205,12 +215,15 @@ export default function AccountPageClient(props: {
             },
             method: 'GET',
         })
+            // getting the user data
             .then((response) => response.json())
             .then((d) => {
                 const user = (d as user_type[]).find(user => user.id == userId) || null;
                 if (typeof (localStorage) != 'undefined') {
+                    // obtaining user id if the local storage is defined (only client side)
                     localStorage.setItem('userId', userId);
                 }
+                // set user data
                 setUser(user);
                 if (user && userColor == "#ffffff") {
                     setuserColor(user.color);
@@ -227,6 +240,7 @@ export default function AccountPageClient(props: {
             },
             method: 'GET',
         })
+            // posts are changed when userId is updated
             .then((response) => response.json())
             .then((d) => {
                 setPosts((d as originalData[]).filter(post => post.userId == userId));
@@ -237,21 +251,26 @@ export default function AccountPageClient(props: {
         setIsClient(true);
     }, [userId])
 
+    // necesary mode states
+    // page calcuation
     const [leftSide, setLeftSide] = useState(false);
     if (userId == null) redirect('/');
     const [mode, setMode] = useState<"posts" | "account">("posts");
     const [page, setPage] = useState<number>(0);
     const [creating, setCreating] = useState(false);
-    const post_num = posts.length;
+    const post_num = posts.length; // number of user posts
     const firstPostIndex = page * POSTS_PER_PAGE;
     const lastPostIndex = Math.min(firstPostIndex + POSTS_PER_PAGE, post_num);
     const [projectName, setProjectName] = useState("");
     const [selectedType, setSelectedType] = useState("");
+    // project data
 
     if (!isClient) return null;
+    // make sure component only render client-wise
 
-
+    // styling
     return <>
+        
         <Background4
             opacity={.3}
             color={hexToRgb(userColor) as any}
@@ -307,7 +326,7 @@ export default function AccountPageClient(props: {
             <div
                 style={{
                     marginTop: '10vh',
-                    width: '20vh',
+                    width: '12vw',
                     alignSelf: 'center',
                     aspectRatio: 1,
                     background: userColor,
@@ -531,7 +550,8 @@ export default function AccountPageClient(props: {
                             display: 'flex',
                             marginTop: '10vh',
                             flexDirection: 'column',
-                            gap: '2vh'
+                            alignItems : "center",
+                            gap: '2vh',
                         }}
                     >
                         <OptionButton
@@ -598,6 +618,7 @@ export default function AccountPageClient(props: {
                         justifyContent: 'flex-start',
                         flexDirection: 'column',
                         alignItems: "center",
+                        padding : "calc(2vh + 2vw)"
                     }}
                 >
                     <h1
@@ -612,8 +633,7 @@ export default function AccountPageClient(props: {
                         style={{
                             background: "rgba(11, 11, 11, 0.19)",
                             borderRadius: '1rem',
-                            height: '8vh',
-                            width: '60vh',
+                            width: '30vw',
                             display: 'flex',
                             justifyContent: 'center',
                             alignItems: 'center',
@@ -629,7 +649,6 @@ export default function AccountPageClient(props: {
                                 background: "rgba(31, 31, 31, 0.17)",
                                 borderRadius: '1rem',
                                 width: '50%',
-                                height: '100%',
                                 fontSize: '3vh',
                                 color: userColor,
                                 textShadow: `0px 0px 10px ${userColor}`,
@@ -737,7 +756,6 @@ export default function AccountPageClient(props: {
                     <div
                         style={{
                             width: '100%',
-                            height: '60vh',
                             marginTop: '2vh',
                             display: 'flex',
                             flexDirection: 'column',
@@ -922,7 +940,7 @@ export default function AccountPageClient(props: {
                             borderColor: selectedType == 'Logic' ? userColor : 'rgb(211,211,211,0.36)',
                         }}
                         onClick={() => setSelectedType('Logic')}
-                    >Logic</motion.button>
+                    >D. Logic</motion.button>
                 </div>
                 <div
                     style={{

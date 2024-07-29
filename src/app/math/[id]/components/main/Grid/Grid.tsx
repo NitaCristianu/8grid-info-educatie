@@ -8,6 +8,12 @@ import { useMotionValue } from "framer-motion";
 import { useAtom } from "jotai";
 import { transparent } from "@/app/math/[id]/data/management";
 
+/*
+THE GRID (BACKGROUND) FROM THE MATH
+DRAWS HORIZONTAL AND VERTICAL LINES OFFSETED BY WORLD POSITION
+
+*/
+
 function DrawGrid(context: CanvasRenderingContext2D, offset: vec2D = { x: 0, y: 0 }, size: vec2D = { x: window.innerWidth + 5, y: window.innerHeight + 5 }) {
     context.beginPath();
     for (let x = offset.x % CELL_SIZE; x < size.x; x += CELL_SIZE) {

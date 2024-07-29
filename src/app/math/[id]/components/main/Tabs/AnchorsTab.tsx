@@ -8,6 +8,12 @@ import { useEffect, useState } from "react";
 import useResize from "../../../hooks/useResize";
 import { v4 } from "uuid";
 
+/*
+THE TAB BELOW USED FOR ANCHORS AND CHAPTERS
+It handles click, real time world postion
+see more below
+*/
+
 function GetClosestAnchor(point: vec2D, anchors: anchor[]) {
     var min = Infinity;
     var closest = null;

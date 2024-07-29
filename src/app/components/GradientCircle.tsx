@@ -1,6 +1,8 @@
 "use client";
 import { motion } from 'framer-motion';
 
+// Gradient circle for visual effects using necessary styles
+// coords and size relative to screen
 export default function GradientCircle(props: {
     x: string | number,
     y: string | number,

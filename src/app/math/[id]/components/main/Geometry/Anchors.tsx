@@ -1,4 +1,12 @@
 "use client";
+
+/*
+THE ACNCHOR ELEMENT THAT IS EDITABLE AND REDIRECTS USER 
+BY MODYFIING THE OFFSET
+
+See more below
+*/
+
 import { useAtom } from "jotai"
 import { ANCHORS, CAN_SELECT, GRID_POSITION, HOVERING_LABELS, vec2D } from "../../../data/globals"
 import { motion } from "framer-motion";
@@ -169,7 +177,7 @@ export default function Achors() {
                             }}
                             onClick={() => {
                                 var clone = [...anchors];
-                                const i = clone.findIndex(a=>a.id == anchor.id);
+                                const i = clone.findIndex(a => a.id == anchor.id);
                                 clone.splice(i, 1);
                                 setAnchors(clone);
                             }}

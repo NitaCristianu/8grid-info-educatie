@@ -6,9 +6,15 @@ import { redirect } from 'next/navigation';
 export default function Projectbutton(props: {
     post_data: originalData | null,
 }) {
+    // the main project button
+
+    // consts and importing neccesary data
     const post_data = props.post_data;
     const color = post_data?.type == "Math" ? "rgb(35, 137, 209)" : "rgb(248, 117, 29)";
     const boxShadow = "0px 0px 1200px " + color;
+
+
+    // button for redirecting user to post data
     return <motion.a
         href={post_data ? `/${post_data?.type.toLowerCase()}/0${post_data?.id}` : "/"}
         whileHover={{

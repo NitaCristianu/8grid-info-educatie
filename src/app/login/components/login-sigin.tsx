@@ -6,6 +6,13 @@ import { currentUser_atom, user_type, users_atom } from '@/app/variables';
 
 const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
+/*
+COMPONENT MADE FOR READING USER INPUT
+IT HANDLES ERRORS FOR INCORECT INFO (See below)
+IT PULLS AND PUSHES DATA (See below)
+
+*/
+
 export interface LogInSignInProps {
     logIn: (id: string) => Promise<void>,
 }
@@ -63,7 +70,7 @@ function Card(props: {
                 display: 'flex',
                 justifyContent: 'center',
                 flexDirection: 'column',
-                padding: props.logging ? '4.5vw' : '3.5vw',
+                padding: props.logging ? 'calc(2.45vh + 2.45vw)' : 'calc(1.5vh + 1.5vw)',
                 background: 'none',
             }}
         >
@@ -81,7 +88,7 @@ function Card(props: {
                     fontWeight: 'light',
                     textAlign: 'center',
                     marginTop: '1vh',
-                    marginBottom: props.logging ? '3vh' : '1vh',
+                    marginBottom: props.logging ? '0vh' : '0vh',
                     color: "rgba(247, 114, 114, 0.53)",
                     textShadow: "0px 0px 10px rgba(255,100,100,0.5)",
                     opacity: props.name.includes(' ') ? 1 : 0,

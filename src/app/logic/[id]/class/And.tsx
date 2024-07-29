@@ -3,6 +3,9 @@ import { ApplyAnd, ComputeFormula } from "../utils/formulas";
 import Cip, { CipProperties } from "./Cip";
 
 export default class And extends Cip {
+    // the and cip
+
+    // predefined values
     constructor(props?: CipProperties) {
         super(props);
         this.color = "rgb(61, 95, 248)";
@@ -12,6 +15,7 @@ export default class And extends Cip {
     }
 
 
+    // the formula applied based on connections
     override update(mouse: MouseObject, prevMouse: MouseObject) {
         super.update(mouse, prevMouse);
         if (this.allInputs) {

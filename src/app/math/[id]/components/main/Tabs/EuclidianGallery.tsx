@@ -10,7 +10,12 @@ import { ePoints_Calc_data, ePoints_data, eSegments_data, GRAPHS, labels_data } 
 import { v4 } from "uuid";
 import { segment_render_mode, tips } from "@/app/math/[id]/data/props";
 import { BACKGROUND } from '../../../data/globals';
-import { Niconne } from "next/font/google";
+
+/*
+THE EUCLIDIAN GALLERY IS USED FOR PLACING GEOMETRY ELEMENTS
+IT HANDLES CLICKS AND DIFFERENT MODES AND BLOCKS
+
+*/
 
 export default function EuclidianGallery() {
     const [placing, setPlacing] = useState(null);

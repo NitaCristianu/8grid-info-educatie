@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 export default function Explorer() {
     const [isClient, setIsClient] = useState(false);
-
+    // the page for explorer client
     useEffect(() => {
         setIsClient(true);
     }, []);
@@ -15,8 +15,9 @@ export default function Explorer() {
     if (!isClient) {
         return null;
     }
+    // only use clinet wise
     return <div
-        suppressHydrationWarning
+        suppressHydrationWarning // make sure unnecesarry bugs are solved.
     >
         <ExplorerClient/>
         <ExitButton/>

@@ -80,6 +80,10 @@ import Background2 from "./components/Background2";
 //   </div>
 // }
 
+// THE BRAND NEW HOME PAGE
+// ONLY RENDER CLIENT WISE DUE TO HOOKS
+// USED STYLING COMPONENTS + Links (check their files)
+
 export default function Home() {
 
   const [isClient, setIsClient] = useState(false);

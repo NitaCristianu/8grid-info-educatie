@@ -9,6 +9,14 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { motion } from 'framer-motion';
 import { usePrevious } from "../../../hooks/usePrevious";
 
+/*
+THE GRAPH COMPONENT
+IT HANDLES DELETION AND REDERING
+USER PLOT LY
+CALCULATED FORMULA USING OPTIMIZATIONS (See below)
+
+*/
+
 const Plot = dynamic(() => import('react-plotly.js'), { ssr: false })
 
 interface GraphProps {

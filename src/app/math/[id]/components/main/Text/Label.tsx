@@ -12,6 +12,14 @@ import { Fragment, Tag, variable } from '@/app/math/[id]/data/props';
 import KaTeX from './Tex';
 import useResize from '@/app/math/[id]/hooks/useResize';
 
+// THE LABEL
+/*
+IT HANDLES LABEL PLACEMENT, MODIFICATIONS, RENDERING AND READING INPUT
+IT CONVERT DIFFERENT MARKDOWN (see more below)
+USED FOR GENERATED SLIDERS AND LATEX FORMULAS
+
+*/
+
 interface slider_props {
     at: number,
     var: string,

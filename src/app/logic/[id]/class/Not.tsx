@@ -3,6 +3,14 @@ import { MouseObject } from "../hooks/useMouse";
 import { ApplyNot, ComputeFormula } from "../utils/formulas";
 import Cip, { CipProperties } from "./Cip";
 
+/*
+
+SIMILAR TO AND (SEE THERE MORE INFO)
+
+used for inversing formula
+
+*/
+
 export default class Not extends Cip {
     constructor(props?: CipProperties) {
         super(props);

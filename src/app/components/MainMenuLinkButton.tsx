@@ -11,6 +11,7 @@ export default function MainMenuLinkButton(props: MainMenuLinkProps) {
     //     content={props.content}
     //     ontap={props.redirect(props.href)}
     // />
+    // the redirecting button used to redirect user to other pages
     return <motion.a
 
         whileHover={{

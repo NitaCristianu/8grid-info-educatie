@@ -4,9 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import { ConstructionVar2, CreatingCustomChip } from '../data/vars';
 import styles from './cipmenu.module.css';
 import useFrame from '../hooks/useFrame';
-import { convertRgbToRgba } from '../utils/colors';
 import { Cips, Inputs, Outputs, Prefabs } from '../data/elements';
-import ReactTextareaAutosize from 'react-textarea-autosize';
+
+/*
+    THE MENU RESPOSINBLE FOR READING USER INPUT
+    AND UPLOADING DATA INTO A PREFAB USED FOR CREATING CHIPS
+
+    below you can see states
+    is triggered by visibility state
+    
+*/
+
 
 export default function CipMenu() {
     const [isVisible, setVisible] = useState<boolean>(CreatingCustomChip.value != null);

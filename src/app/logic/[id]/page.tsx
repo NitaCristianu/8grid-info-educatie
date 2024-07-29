@@ -14,6 +14,13 @@ import Connection, { ConnectionEnd, ConnectionStart } from "./class/Connection";
 import { useEffect, useState } from "react";
 import { originalData } from "@/app/explorer/[id]/components/explorer-client-post";
 
+/*
+MAIN PAGE, RESPONSIBLE FOR
+IMPORT AND EXPORT OF DATA
+
+RESTRICTS ACCES BASED ON EDITABILITY
+*/
+
 export interface Sim_data {
     inputs: {
         y: number;
@@ -29,7 +36,7 @@ export interface Sim_data {
         inputsNum: number;
         name: string;
         outputFormulas: string[];
-        desc? : string,
+        desc?: string,
         color: string;
     }[];
     cips: {

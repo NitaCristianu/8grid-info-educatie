@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Explorer(props: { params: { id: string } }) {
+    // the page for explorer [id]
     const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
@@ -14,6 +15,7 @@ export default function Explorer(props: { params: { id: string } }) {
     if (!isClient) {
         return null;
     }
+    // only render client - wise
     return <div
         suppressHydrationWarning
     ><ExplorerClient

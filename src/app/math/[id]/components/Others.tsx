@@ -5,6 +5,11 @@ import { ePoints_Calc_data, ePoints_data, eSegments_data, GRAPHS, labels_data } 
 import { memo, useEffect } from 'react';
 import { ANCHORS, AUTHOR, WORLD_ID, WORLD_NAME } from "../data/globals";
 
+/*
+USED FOR LOADING DATA FROM DB INTO THE POST
+
+*/
+
 const Others = memo((props: any) => {
     const [_, set_points] = useAtom(ePoints_data);
     const [__, set_points_calc] = useAtom(ePoints_Calc_data);

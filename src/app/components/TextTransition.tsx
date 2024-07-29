@@ -3,6 +3,8 @@ import { motion, MotionProps, MotionStyle } from 'framer-motion';
 import { HTMLAttributes } from 'react';
 
 export default function TextTransition(props: { initial: string, after?: string, gapWords?: number, style?: MotionStyle }) {
+    // a component that transitions from text a to b on mouse hold
+    // it takes initial string and after, more info below
     return <motion.h1
         initial={"initial"}
         whileHover={'hovered'}
@@ -22,6 +24,7 @@ export default function TextTransition(props: { initial: string, after?: string,
         <motion.div
             whileHover={{ cursor: "pointer" }}
         >
+            {/*the first string */}
             {props.initial.split("").map((l: string, i: number) => {
                 return <motion.span
                     key={i}
@@ -51,6 +54,7 @@ export default function TextTransition(props: { initial: string, after?: string,
                 inset: 0
             }}
         >
+            {/**the second string */}
             {(props.after || props.initial).split("").map((l: string, i: number) => {
                 return <motion.span
                     style={{

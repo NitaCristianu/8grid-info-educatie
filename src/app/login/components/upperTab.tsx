@@ -2,6 +2,11 @@
 import { motion } from 'framer-motion';
 import { redirect } from 'next/navigation';
 
+
+/*
+THE EXIT BUTTONS THAT REDIRECTS TO EITHER A HREF OR DEFAULT
+
+*/
 export default function ExitButton(props: {
     href?: string
 }) {

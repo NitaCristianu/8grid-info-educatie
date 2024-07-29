@@ -19,6 +19,20 @@ export interface MouseObject {
   buttons: MouseButtons;
 }
 
+/*
+
+THE MOUSE HOOK
+-----------------
+IS USED FOR DETECING MOUSE POSITION
+MOUSE BUTTONS + DOUBLE CLICK
+SEE INTERFACE ABOVE FOR EXACT DATA
+
+works based on window events nested in use efects
+not for sever
+
+
+*/
+
 export default function useMouse(): MouseObject {
   const [mouse_pos, setMousePosition] = useState<MousePosition>({ x: 0, y: 0 });
   const [mouse_btn, setMouseButtons] = useState<MouseButtons>({ left: false, middle: false, right: false, doubleClick: false });

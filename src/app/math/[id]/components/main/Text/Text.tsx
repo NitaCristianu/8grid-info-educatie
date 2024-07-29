@@ -3,6 +3,8 @@ import { useAtom } from "jotai"
 import { labels_data } from '../../../data/elements';
 import Label from "./Label";
 
+// the container of texts (it spread every label into different components)
+
 export default function Text(props : {isEditable? : boolean}) {
     const [labels, set_labels] = useAtom(labels_data);
     return (<>

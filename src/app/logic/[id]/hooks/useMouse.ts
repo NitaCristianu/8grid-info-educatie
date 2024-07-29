@@ -1,7 +1,20 @@
 // src/hooks/useMouse.ts
 
 import { useState, useEffect } from 'react';
-import { ConstructionVar2 } from '../data/vars';
+
+/*
+
+THE MOUSE HOOK
+-----------------
+IS USED FOR DETECING MOUSE POSITION
+MOUSE BUTTONS + DOUBLE CLICK
+SEE INTERFACE ABOVE FOR EXACT DATA
+
+works based on window events nested in use efects
+not for sever
+
+
+*/
 
 export interface MousePosition {
   x: number;

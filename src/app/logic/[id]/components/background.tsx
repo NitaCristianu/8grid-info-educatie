@@ -2,10 +2,16 @@
 import { CANVAS_SIZE } from "../data/consts";
 import { Position } from "../data/vars";
 
-const GRID_SPACING = 30;
+/*
+CREATING THE GRID MADE OF SMALL CROSSED
+SEE CONSTS BELOW
+
+*/
+
 
 export default function Background(ctx: CanvasRenderingContext2D, screenSize: { x: number, y: number }) {
-
+    
+    const GRID_SPACING = 30;
     const DOT_SIZE = 2;
     const BGR_COLOR = "rgb(20, 20, 25)";
     const DOT_COLOR = "rgba(70,70,80, 0.4)";

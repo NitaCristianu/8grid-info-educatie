@@ -1,3 +1,6 @@
+/*
+VARIABLES AND CONSTS USED IN THIS SECTIONS
+*/
 export interface completePinLocation { type: 'input' | 'output' | 'gatetype', index: number, subtype: 'input' | 'output', id: string }
 export type constructs = "and" | "not" | string | null;
 

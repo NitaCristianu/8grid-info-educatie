@@ -3,7 +3,7 @@ import { CSSProperties } from "react";
 import MainMenuLinkButton from "./MainMenuLinkButton";
 
 export default function Links(props: { style: CSSProperties }) {
-
+    // the links menu
     var currentUser = null;
     if (typeof (window) != 'undefined') {
         currentUser = localStorage.getItem("useId");

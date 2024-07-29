@@ -14,6 +14,12 @@ import saveIcon from './assets/saveIcon.png';
 import Graph from "./assets/Graph2.png";
 import { ePoints_Calc_data, ePoints_data, eSegments_data, GRAPHS, labels_data } from "../../../data/elements";
 
+/*
+THE TASKBAR WHICH STORES THE BUTTONS THAT CHANGE EACH APP MODE
+ALSO INCLUDES THE SAVE BUTTON WHICH UPLOAD DATA TO THE DATABASE
+see more below
+*/
+
 const buttons: mode[] = [
     "menu",
     "selection",
