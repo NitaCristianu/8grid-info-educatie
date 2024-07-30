@@ -1,5 +1,9 @@
 "use client";
 
+/*
+MAIN ACCOUNT CLIENT PAGE
+*/
+
 import GradientCircle from "@/app/components/GradientCircle";
 import { currentUser_atom, post_type, user_type, users_atom } from "@/app/variables";
 import { redirect } from "next/navigation";
@@ -10,7 +14,7 @@ import { rotate } from "three/examples/jsm/nodes/Nodes.js";
 import { originalData } from "@/app/explorer/[id]/components/explorer-client-post";
 import Background4 from "./Background4";
 
-const POSTS_PER_PAGE = 5;
+const POSTS_PER_PAGE = 4;
 const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
 function OptionButton(props: { callback: () => void, href?: string, content: string, color?: string, style?: CSSProperties }) {

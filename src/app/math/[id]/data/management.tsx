@@ -6,17 +6,21 @@ import { v4 } from "uuid";
 
 export interface rgb { r: number, g: number, b: number };
 
+// check if a point is constant
 export function isEPointsCalc(p: ePoint | ePoints_Calc): p is ePoints_Calc {
     return (p as ePoints_Calc).formula !== undefined;
 }
 
+// find coords of a constant point
 export function getCoords(p: ePoint): vec2D {
     return { x: p.x || 0, y: p.y || 0 };
 }
 
+// decomposes segment into its ends
 export function decomposeSegment(segment: eSegment, points: ePoint[], points_calc: ePoints_Calc[]) {
     let p1_index = points.findIndex(p => p.id == segment.from);
     let p2_index = points.findIndex(p => p.id == segment.to);
+    // finds if ends are costants
     var p1_calc = false, p2_calc = false;
     if (p1_index == -1) {
         p1_index = points_calc.findIndex(p => p.id == segment.from);
@@ -26,31 +30,41 @@ export function decomposeSegment(segment: eSegment, points: ePoint[], points_cal
         p2_calc = true;
         p2_index = points_calc.findIndex(p => p.id == segment.to);
     }
+    // based on which returns the ends
     return [p1_calc ? points_calc[p1_index] : points[p1_index], p2_calc ? points_calc[p2_index] : points[p2_index]];
 }
 
+// returns segment position
 export function getSegmentCoords(segment: eSegment, points: ePoint[], points_calc: ePoints_Calc[], variables: variable[]) {
     const decomposed = decomposeSegment(segment, points, points_calc);
+    // obtains ends data 
     return decomposed.map(v => {
         if (v == undefined) return { x: 0, y: 0 };
+        // returns coordonates based on end
+        // v is considered one of the ends
         let p_index = points.findIndex(p => p.id == v.id);
         let x = 0, y = 0;
+        // checks if p is constant
         if (p_index == -1) {
             p_index = points_calc.findIndex(p => p.id == v.id);
             if (p_index > -1) {
+                // check if it is not costant
                 const pos = ObtainPosition(points_calc[p_index].formula, points, points_calc, variables);
                 x = pos.x;
                 y = pos.y;
             }
         } else {
             const pos = getCoords(v as ePoint);
+            // sets position of constant point
             x = pos.x;
             y = pos.y;
         }
+        // returns coord
         return { x: x, y: y };
     });
 }
 
+// returns a unique letter from the alphabet based on current points
 export function getUniqueTag(points: ePoint[], points_calc: ePoints_Calc[]) {
     var tag: string = "a";
     var i = 0;
@@ -80,16 +94,19 @@ export function getUniqueTag(points: ePoint[], points_calc: ePoints_Calc[]) {
     return " ";
 }
 
+// converts global space to local space
 export function toLocal(pos: vec2D, offset: vec2D): vec2D {
     if (!pos) return offset;
     return { x: pos.x + offset.x, y: pos.y + offset.y }
 }
 
+// converts local space to global space
 export function toGlobal(pos: vec2D, offset: vec2D): vec2D {
     if (!pos) return { x: -offset.x, y: -offset.y };
     return { x: pos.x - offset.x, y: pos.y - offset.y }
 }
 
+// adds a new point in list
 export function AddPoint(pos: vec2D, points: ePoint[], points_calc: ePoints_Calc[]) {
     return [...points, { color: "rgba(231, 255, 255, .995)", x: pos.x, y: pos.y, id: v4(), tag: getUniqueTag(points, points_calc) }];
 }
@@ -100,6 +117,7 @@ export function Distance_Squared(A: vec2D, B: vec2D) {
     return a * a + b * b;
 }
 
+// returns closest point s || null
 export function GetClosestPoint(pos: vec2D, points: ePoint[]) {
     // assuming points.lenght > 0
     var closest_id = "";
@@ -114,6 +132,8 @@ export function GetClosestPoint(pos: vec2D, points: ePoint[]) {
     }
     return { closest_id, closest_distance };
 }
+
+// finds closest precalculated points || null
 export function GetClosestPointCalc(pos: vec2D, pointsCalc: ePoints_Calc[], points: ePoint[], variables: variable[]) {
     var closest_id = "";
     var closest_distance = Infinity;
@@ -128,6 +148,7 @@ export function GetClosestPointCalc(pos: vec2D, pointsCalc: ePoints_Calc[], poin
     return { closest_id, closest_distance };
 }
 
+// finds the point the mouse is hovering
 export function GetHoveringPoint(pos: vec2D, points: ePoint[], threshold: number = 1) {
     const { closest_id, closest_distance } = GetClosestPoint(pos, points);
     var exists = false;
@@ -137,6 +158,7 @@ export function GetHoveringPoint(pos: vec2D, points: ePoint[], threshold: number
     return { isHovering: false, Hovering_id: "" };
 }
 
+// finds the calcualted point the mouse is hovering
 export function GetHoveringPointCalc(pos: vec2D, pointsCalc: ePoints_Calc[], points: ePoint[], variables: variable[], threshold: number = 1) {
     const { closest_id, closest_distance } = GetClosestPointCalc(pos, pointsCalc, points, variables);
     var exists = false;
@@ -146,6 +168,7 @@ export function GetHoveringPointCalc(pos: vec2D, pointsCalc: ePoints_Calc[], poi
     return { isHovering: false, Hovering_id: "" };
 }
 
+// finds if mouse hovers over any point
 export function GetAnyHoveringPoint(pos: vec2D, points: ePoint[], pointsCalc: ePoints_Calc[], variables: variable[], threshold: number = 1) {
     const a = GetHoveringPoint(pos, points, threshold);
     const b = GetHoveringPointCalc(pos, pointsCalc, points, variables, threshold);
@@ -175,6 +198,7 @@ export function DistanceToLineSquared(point: vec2D, lineStart: vec2D, lineEnd: v
     return dx * dx + dy * dy;
 }
 
+// clamp
 export function clmap(num: number, min: number, max: number) { return Math.min(Math.max(num, min), max) };
 
 export function DistanceToSegmentSquared(pos: vec2D, segment: eSegment, points: ePoint[], points_calc: ePoints_Calc[], variables: variable[]) {
@@ -215,6 +239,7 @@ export function DistanceToSegmentSquared(pos: vec2D, segment: eSegment, points: 
     return d;
 }
 
+// returns closest segments | nulll
 export function GetClosestSegment(pos: vec2D, points: ePoint[], points_calc: ePoints_Calc[], segments: eSegment[], variables: variable[]) {
     var closest_id = "";
     var closest_distance = Infinity;
@@ -230,6 +255,7 @@ export function GetClosestSegment(pos: vec2D, points: ePoint[], points_calc: ePo
     return { closest_id, closest_distance };
 }
 
+// returns the current hovering segment based on distance
 export function GetHoveringSegment(pos: vec2D, points: ePoint[], points_calc: ePoints_Calc[], segments: eSegment[], variables: variable[], threshold = 1) {
     if (segments.length == 0) return { isHovering: false, Hovering_id: "" };
     const { closest_id, closest_distance } = GetClosestSegment(pos, points, points_calc, segments, variables);
@@ -239,6 +265,7 @@ export function GetHoveringSegment(pos: vec2D, points: ePoint[], points_calc: eP
     return { isHovering: false, Hovering_id: "" };
 }
 
+// finds what I am hovering on (segment or point)
 export function GetHovering(pos: vec2D, points: ePoint[], segments: eSegment[], points_calc: ePoints_Calc[], variables: variable[], threshold = 1) {
     const { isHovering: isHoveringPoint, Hovering_id: Hovering_id_Point } = GetHoveringPoint(pos, points, threshold);
     if (isHoveringPoint) return { isHovering: isHoveringPoint, Hovering_id: Hovering_id_Point };
@@ -248,11 +275,14 @@ export function GetHovering(pos: vec2D, points: ePoint[], segments: eSegment[], 
     return { isHovering: isHoveringSegment, Hovering_id: Hovering_id_Segment };
 }
 
+// determines string matches fro cases where they are between ()
+// for example : (x, y)
 export function findNonSurroundedLetters(inputString: string): string[] {
     const nonSurroundedLetters = inputString.match(/(?<![a-z])[a-z](?![a-z])/gi) || [];
     return nonSurroundedLetters;
 }
 
+// replaces a letter with a value
 export function ReplaceLetter(str: string, letter: string, value: number | string) {
     if (!str.includes(letter)) return str;
     const regex = new RegExp(`([^a-z()]|^)${letter}(?=[^a-z()]|$)`, 'ig');
@@ -260,6 +290,7 @@ export function ReplaceLetter(str: string, letter: string, value: number | strin
 }
 
 
+// returns if a point is inside a rect, where rect is {tl, tr, w, h}
 export function IsPointInRect(point: vec2D, rect: vec2D[]) {
     const from = rect[0];
     const to = rect[1];
@@ -280,6 +311,7 @@ export function IsPointInRect(point: vec2D, rect: vec2D[]) {
     )
 }
 
+// returns if a segment is in rect
 export function IsSegmentInRect(segment: eSegment, points: ePoint[], points_calc: ePoints_Calc[], rect: vec2D[], variables: variable[]) {
     const from = rect[0];
     const to = rect[1];
@@ -296,10 +328,12 @@ export function IsSegmentInRect(segment: eSegment, points: ePoint[], points_calc
         (pos2.x >= topleft.x && pos2.x <= bottomRight.x && pos2.y >= topleft.y && pos2.y <= bottomRight.y)
 }
 
+// are two segments the saem
 export function EqualSegments(a: eSegment, b: eSegment) {
     return ((a.from == b.from && a.to == b.to) || (a.to == b.from && a.from == b.to)) && (a.renderMode == b.renderMode);
 }
 
+// does the segment already exists
 export function DoesSegmentExist(segment: eSegment, segments: eSegment[]) {
     let exists = false;
 
@@ -309,6 +343,7 @@ export function DoesSegmentExist(segment: eSegment, segments: eSegment[]) {
     return exists;
 }
 
+// finds unique characters from a string
 export function getUniqueLetters(str: string) {
     let uniqueLetters = '';
     for (let i = 0; i < str.length; i++) {
@@ -319,6 +354,7 @@ export function getUniqueLetters(str: string) {
     return uniqueLetters;
 }
 
+// finds common letter from 2 strings
 export function hasCommonLetter(str1: string, str2: string) {
     for (let i = 0; i < str1.length; i++) {
         if (str1[i].match(/[A-Za-z]/) && str2.includes(str1[i])) {
@@ -328,6 +364,7 @@ export function hasCommonLetter(str1: string, str2: string) {
     return false;
 }
 
+// tries to evaluate str
 export function canBeEvaluated(str: string) {
     try {
         eval(str);
@@ -337,6 +374,7 @@ export function canBeEvaluated(str: string) {
     }
 }
 
+// calculates point based on others and its formula (Recursive)
 export function ObtainPosition(formula: string, points: ePoint[], points_calc: ePoints_Calc[], variables: variable[]) {
     if (formula.length == 0) return { x: 0, y: 0 };
     const original = formula;
@@ -346,6 +384,7 @@ export function ObtainPosition(formula: string, points: ePoint[], points_calc: e
     let matches = [...(formula as any).matchAll(regex)];
     let formulaX = formula;
     let formulaY = formula;
+    // decomposition
     if (formula.includes("x:") && formula.includes("y:")) {
         formulaX = formula.substring(formula.indexOf("x:") + 2, formula.indexOf("y:"));
         formulaY = formula.substring(formula.indexOf("y:") + 2, formula.length);
@@ -360,6 +399,7 @@ export function ObtainPosition(formula: string, points: ePoint[], points_calc: e
         formulaY = formulaY.replace(str, `${y}`);
 
     }
+    // replcements
     points.forEach(point => {
         try {
             const regex = new RegExp(point.tag, 'g');
@@ -415,11 +455,13 @@ export function ObtainPosition(formula: string, points: ePoint[], points_calc: e
             return false;
         }
     })
+    // if can be evaluated returns now
     if (canBeEvaluated(formulaX) && canBeEvaluated(formulaY))
         return {
             x: eval(formulaX),
             y: eval(formulaY)
         }
+            // params
     for (let i = 0; i < variables.length; i++) {
         const var_ = variables[i];
         formulaX = formulaX.replaceAll(var_.name, `${var_.value}`);
@@ -472,6 +514,8 @@ export function RGB2string(col: rgb | string) {
     return `rgb(${col.r},${col.g},${col.b})`;
 }
 
+// exposes a color string based on n
+// negative for draker color and positive for bright colors
 export function modify(colorValue: string | rgb, n: number): string {
     if (typeof (colorValue) == "string") colorValue = parseRGB(colorValue);
     colorValue.r *= n;
@@ -484,6 +528,9 @@ export function modify(colorValue: string | rgb, n: number): string {
 
 }
 
+// decomposes label into framgents
+// sliders, latex, text
+// returns result
 export function createFragmentList(string: string, tags: Tag[]): Fragment[] {
     let fragments: Fragment[] = [];
     let startIdx: number = 0;
@@ -521,11 +568,13 @@ export function createFragmentList(string: string, tags: Tag[]): Fragment[] {
     return fragments;
 }
 
+// makes a color transparent
 export const transparent = (col: rgb | string, n: number) => {
     if (typeof (col) == 'string') { col = parseRGB(col) };
     return `rgba(${col.r}, ${col.g}, ${col.b}, ${n})`
 }
 
+// stores functions to JSON
 export function encryptGraph(graph: {
     x: number,
     y: number,
@@ -546,6 +595,7 @@ export function encryptGraph(graph: {
     };
 }
 
+// destores functions to JSON
 export function cryptGraph(graph: {
     x: number,
     y: number,
