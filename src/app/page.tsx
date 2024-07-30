@@ -98,14 +98,14 @@ export default function Home() {
 
   return <>
     <GradientCircle
-      x={.03}
+      x={-.09}
       y={-.4}
       size={1}
       zIndex={2}
       color="rgba(3, 7, 45, 0.45)"
     />
     <Background2
-      x={0.32}
+      x={0.20}
       y={0}
       opacity={1}
     />
