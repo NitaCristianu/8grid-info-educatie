@@ -1,5 +1,7 @@
 # 8Grid
 
+> Disclaimer: Please not that the following application does not include a secure backend and you're advised to not include any private information. Its scope is within the competition context.
+
 **8Grid** is an award-winning platform that earned **3rd place** at the prestigious **InfoEducatie 2024** competition for applied informatics. The platform was specifically designed for the contest and implements innovative features tailored to address practical challenges in the educational domain. The application consists of two distinct, yet integrated, components:
 1. A **Mathematical Tools** suite with an infinite grid for interactive education.
 2. A **Digital Logic Simulator** enabling the creation of logic circuits.
