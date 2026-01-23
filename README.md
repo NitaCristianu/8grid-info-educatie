@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 8Grid
 
-## Getting Started
+**8Grid** is an award-winning platform that earned **3rd place** at the prestigious **InfoEducatie 2024** competition for applied informatics. The platform was specifically designed for the contest and implements innovative features tailored to address practical challenges in the educational domain. The application consists of two distinct, yet integrated, components:
+1. A **Mathematical Tools** suite with an infinite grid for interactive education.
+2. A **Digital Logic Simulator** enabling the creation of logic circuits.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🌟 Key Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Mathematical Tools
+- **Infinite Grid Workspace**: Provides unlimited space for note-taking and interactive exploration.
+- **Comprehensive Mathematical Tools**:
+  - Graph visualization.
+  - Equation and algebra manipulation.
+  - Geometry tools.
+  - Numeric and symbolic computations.
+- **Interactive Sliders**: Dynamically adjust variable parameters and see results update in real-time.
+- **Annotation and Organization**: Organize notes and mathematical elements easily.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Digital Logic Simulator
+- **Infinite Circuit Grid**: Design digital logic circuits using an open, infinite grid.
+- **Logical Gates Library**: Includes standard logic components such as:
+  - **AND gates**
+  - **OR gates**
+  - **NOT gates**
+  - Other fundamental gates.
+- **Drag-and-Drop Creation**: Simply create and connect gates to build custom logic circuits.
+- **Single-File Design**: The simulator is lightweight, efficient, and compact—designed such that all logic operates in a single-file architecture.
+  
+> Please note: 
+> The platform is intentionally streamlined for **simplicity and contest-specific constraints**. It does not yet include features like persistence, cloud deployment, or advanced scalability. It serves as an efficient demonstration of concept and functionality.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+## 🔧 Technologies Used
+- **Next.js**: Powers the platform with robust server-side rendering for optimized performance.
+- **JavaScript/TypeScript**: Core programming languages for clean and maintainable code.
+- **CSS**: Ensures a polished, user-friendly interface.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎯 Purpose of the Project
+This project was developed specifically for the **InfoEducatie 2024** competition, crafting a powerful solution within defined constraints and deadlines. The goal was to demonstrate proficiency in applied informatics and the ability to deliver highly functional educational tools in a constrained environment.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 🎉 Competition Link
+https://community.infoeducatie.ro/t/8grid-educational-bucuresti-lucrari-2024-nationala/6173
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
